@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CIG-Bench: Survey & Benchmark for Subsurface Imaging</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <style>
+    :root {
+      --bg:#FAFAF8;--surface:#FFF;--text:#1a1a2e;--text2:#4a4a6a;
+      --accent:#2D5F8A;--accent-l:#3A7AB5;--accent-bg:#EBF2F8;
+      --border:#E2E2E2;--gold:#B8860B;
+      --serif:'Source Serif 4',Georgia,serif;
+      --sans:'Inter',-apple-system,sans-serif;
+      --mono:'JetBrains Mono',monospace;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--sans);color:var(--text);background:var(--bg);line-height:1.72;font-size:15px;-webkit-font-smoothing:antialiased}
+
+    .topbar{height:3px;background:linear-gradient(90deg,var(--accent),var(--gold),var(--accent));position:fixed;top:0;left:0;right:0;z-index:1000}
+
+    nav{position:sticky;top:3px;z-index:999;background:rgba(250,250,248,0.9);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+    .nav-in{max-width:780px;margin:0 auto;display:flex;justify-content:center;gap:0}
+    .nav-in a{font-size:12.5px;font-weight:500;color:var(--text2);text-decoration:none;padding:12px 16px;border-bottom:2px solid transparent;transition:all .2s;letter-spacing:.02em}
+    .nav-in a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+
+    .wrap{max-width:720px;margin:0 auto;padding:0 20px}
+    .wrap-w{max-width:860px;margin:0 auto;padding:0 20px}
+
+    .hero{padding:64px 20px 40px;text-align:center;max-width:760px;margin:0 auto}
+    .badge{display:inline-block;font-family:var(--mono);font-size:11px;font-weight:500;color:var(--accent);background:var(--accent-bg);padding:5px 16px;border-radius:100px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:22px}
+    .hero h1{font-family:var(--serif);font-size:clamp(24px,3.5vw,36px);font-weight:700;line-height:1.22;margin-bottom:24px}
+    .hero h1 em{font-style:normal;background:linear-gradient(120deg,var(--accent),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .authors{display:flex;justify-content:center;gap:32px;margin-bottom:6px;flex-wrap:wrap}
+    .auth-name{font-size:15.5px;font-weight:500}
+    .auth-name sup{font-size:10px;color:var(--accent)}
+    .affil{font-size:13px;color:var(--text2);margin-top:2px;text-align:center}
+    .corr{font-size:12.5px;color:var(--text2);margin-top:3px;text-align:center}
+    .corr a{color:var(--accent);text-decoration:none}
+    .actions{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-top:26px}
+    .btn{display:inline-flex;align-items:center;gap:7px;padding:8px 18px;border-radius:7px;font-size:13px;font-weight:500;text-decoration:none;border:1.5px solid var(--border);color:var(--text);background:var(--surface);transition:all .2s}
+    .btn:hover{border-color:var(--accent);color:var(--accent);box-shadow:0 2px 8px rgba(45,95,138,.1);transform:translateY(-1px)}
+    .btn-p{background:var(--accent);color:#fff;border-color:var(--accent)}
+    .btn-p:hover{background:var(--accent-l);border-color:var(--accent-l);color:#fff}
+    .btn i{font-size:14px}
+
+    .divider{width:50px;height:2px;background:linear-gradient(90deg,var(--accent),var(--gold));margin:0 auto;border-radius:2px}
+
+    .sec{padding:44px 0}
+    .sec-title{font-family:var(--serif);font-size:22px;font-weight:600;text-align:center;margin-bottom:24px;color:var(--text)}
+    .sec-title::after{content:'';display:block;width:36px;height:2px;background:var(--accent);margin:10px auto 0;border-radius:2px}
+
+    .abs-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:32px 36px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+    .abs-box p{font-family:var(--serif);font-size:14px;line-height:1.85;color:var(--text2);text-align:justify;hyphens:auto}
+    .abs-box p+p{margin-top:12px}
+    .abs-box strong{color:var(--text)}
+
+    .stats{display:flex;justify-content:center;gap:36px;flex-wrap:wrap;padding:28px 0;margin:0 auto;border-top:1px solid var(--border);border-bottom:1px solid var(--border);max-width:600px}
+    .stat-n{font-family:var(--mono);font-size:26px;font-weight:600;color:var(--accent);text-align:center}
+    .stat-l{font-size:11.5px;color:var(--text2);text-align:center;margin-top:2px}
+
+    .fig{margin:28px 0;text-align:center}
+    .fig img{max-width:100%;height:auto;border-radius:6px;border:1px solid var(--border);box-shadow:0 1px 8px rgba(0,0,0,.05)}
+    .fig-cap{font-size:12.5px;color:var(--text2);margin-top:10px;line-height:1.6;max-width:660px;margin-left:auto;margin-right:auto;text-align:justify}
+    .fig-cap strong{color:var(--text)}
+    .fig-sm img{max-width:580px}
+
+    .tasks{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:20px}
+    .tcard{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:22px 20px;transition:all .2s;position:relative;overflow:hidden}
+    .tcard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent);opacity:0;transition:opacity .2s}
+    .tcard:hover{border-color:var(--accent);box-shadow:0 3px 14px rgba(45,95,138,.07);transform:translateY(-1px)}
+    .tcard:hover::before{opacity:1}
+    .tcard .ico{font-size:22px;margin-bottom:10px;display:block}
+    .tcard h3{font-family:var(--serif);font-size:16px;font-weight:600;margin-bottom:8px}
+    .tcard p{font-size:12.5px;line-height:1.6;color:var(--text2)}
+
+    /* ─── Carousel (shared) ─── */
+    .carousel{position:relative;max-width:700px;margin:0 auto;overflow:hidden;border-radius:10px;border:1px solid var(--border);background:var(--surface);box-shadow:0 2px 12px rgba(0,0,0,.05)}
+    .c-track-wrap{overflow:hidden}
+    .c-track{display:flex;transition:transform .4s cubic-bezier(.25,.8,.25,1)}
+    .c-slide{min-width:100%;padding:20px}
+    .c-slide img{width:100%;max-width:640px;height:auto;border-radius:6px;display:block;margin:0 auto}
+    .c-slide .c-cap{font-size:12.5px;color:var(--text2);margin-top:14px;line-height:1.6;text-align:justify;max-width:620px;margin-left:auto;margin-right:auto}
+    .c-slide .c-cap strong{color:var(--text)}
+    .c-btn{position:absolute;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.92);border:1px solid var(--border);color:var(--text);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10;transition:all .2s;box-shadow:0 2px 6px rgba(0,0,0,.08)}
+    .c-btn:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+    .c-btn.prev{left:12px}
+    .c-btn.next{right:12px}
+    .c-dots{display:flex;justify-content:center;gap:7px;padding:12px 0 16px}
+    .c-dot{width:7px;height:7px;border-radius:50%;background:var(--border);border:none;cursor:pointer;transition:all .2s;padding:0}
+    .c-dot.on{background:var(--accent);width:22px;border-radius:4px}
+
+    /* Tab labels for evolution carousel */
+    .c-tabs{display:flex;justify-content:center;gap:6px;padding:16px 16px 0;flex-wrap:wrap}
+    .c-tab{font-size:12px;font-weight:500;padding:6px 14px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text2);cursor:pointer;transition:all .2s;font-family:var(--sans)}
+    .c-tab.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+    .c-tab:hover:not(.on){border-color:var(--accent);color:var(--accent)}
+
+    .hl{display:flex;gap:14px;padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:9px;margin-bottom:12px;transition:border-color .2s}
+    .hl:hover{border-color:var(--accent)}
+    .hl-n{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--accent);background:var(--accent-bg);width:32px;height:32px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .hl p{font-size:13.5px;line-height:1.65;color:var(--text2)}
+    .hl p strong{color:var(--text)}
+
+    .bib{background:#1E293B;border-radius:9px;padding:20px 24px;position:relative;margin-top:16px;overflow-x:auto}
+    .bib pre{font-family:var(--mono);font-size:12px;line-height:1.6;color:#CBD5E1;white-space:pre-wrap;word-break:break-all}
+    .bib-cp{position:absolute;top:10px;right:10px;padding:5px 12px;font-size:11px;font-family:var(--sans);font-weight:500;border:1px solid rgba(255,255,255,.15);border-radius:5px;background:rgba(255,255,255,.06);color:#94A3B8;cursor:pointer;transition:all .2s}
+    .bib-cp:hover{background:rgba(255,255,255,.12);color:#E2E8F0}
+
+    footer{text-align:center;padding:32px 20px;font-size:12px;color:var(--text2);border-top:1px solid var(--border);margin-top:32px}
+    footer a{color:var(--accent);text-decoration:none}
+
+    .fade{opacity:0;transform:translateY(16px);transition:opacity .5s,transform .5s}
+    .fade.vis{opacity:1;transform:translateY(0)}
+
+    @media(max-width:600px){
+      .tasks{grid-template-columns:1fr}
+      .stats{gap:20px}
+      .abs-box{padding:20px 16px}
+      .nav-in a{padding:10px 8px;font-size:11.5px}
+      .c-tabs{gap:4px}
+      .c-tab{font-size:11px;padding:5px 10px}
+    }
+  </style>
+</head>
+<body>
+
+<div class="topbar"></div>
+<nav><div class="nav-in">
+  <a href="#abstract">Abstract</a>
+  <a href="#overview">Overview</a>
+  <a href="#tasks">Tasks</a>
+  <a href="#evolution">Evolution</a>
+  <!-- <a href="#benchmark">CIG-Bench</a> -->
+  <a href="#citation">Citation</a>
+</div></nav>
+
+<header class="hero">
+  <div class="badge">Survey &amp; Benchmark · 2025</div>
+  <h1><em>CIG-Bench</em>: A Comprehensive Survey and Benchmark for ML-Driven Subsurface Imaging Interpretation</h1>
+  <div class="authors">
+    <div><div class="auth-name">Yimin Dou<sup>1</sup></div></div>
+    <div><div class="auth-name">Xinming Wu<sup>1,*</sup></div></div>
+  </div>
+  <div class="affil"><sup>1</sup> University of Science and Technology of China, School of Earth and Space Sciences</div>
+  <div class="corr">* Corresponding author: <a href="mailto:xinmwu@ustc.edu.cn">xinmwu@ustc.edu.cn</a></div>
+  <div class="actions">
+    <a class="btn btn-p" href="#"><i class="fas fa-file-pdf"></i> Paper</a>
+    <a class="btn" href="https://github.com/douyimin/CIG-bench" target="_blank"><i class="fab fa-github"></i> Code</a>
+    <a class="btn" href="#"><i class="fas fa-database"></i> Dataset</a>
+    <a class="btn" href="#citation"><i class="fas fa-quote-right"></i> Cite</a>
+  </div>
+</header>
+
+<div class="divider"></div>
+
+<!-- Abstract -->
+<div class="sec fade" id="abstract"><div class="wrap">
+  <h2 class="sec-title">Abstract</h2>
+  <div class="abs-box">
+    <p>Subsurface imaging and interpretation serve as the essential link between observational data and geological models. They support quantitative analyses of structural evolution, reservoir formation processes, and multiphysics coupling, and they enhance the assessment and optimization of geological model uncertainty. In applied domains, subsurface interpretation has become a central technology for hydrocarbon exploration, geological storage site selection for CO&#8322;, and risk identification of geological hazards.</p>
+    <p>This study examines <strong>652 publications</strong> from the past decade and categorizes them into four major research directions: <em>structural interpretation</em>, <em>geobody identification</em>, <em>seismic facies analysis</em>, and <em>attribute estimation</em>. We conducted citation network analysis to characterize the intrinsic connections and knowledge flow patterns among these categories.</p>
+    <p>We introduce <strong>CIG-Bench</strong>, a benchmark suite consisting of deep learning baselines together with the corresponding datasets, enabling reproducible qualitative comparisons in terms of structural continuity, geometric consistency, geological plausibility, cross-scale stability, and interpretability.</p>
+  </div>
+</div></div>
+
+<!-- Stats -->
+<!-- <div class="sec fade" style="padding-top:0;padding-bottom:0"><div class="wrap">
+  <div class="stats">
+    <div><div class="stat-n">652</div><div class="stat-l">Papers Surveyed</div></div>
+    <div><div class="stat-n">10</div><div class="stat-l">Years (2015–2025)</div></div>
+    <div><div class="stat-n">4</div><div class="stat-l">Task Categories</div></div>
+    <div><div class="stat-n">6+</div><div class="stat-l">Benchmark Datasets</div></div>
+  </div>
+</div></div> -->
+
+<!-- Contributions -->
+<div class="sec fade"><div class="wrap">
+  <h2 class="sec-title">Key Contributions</h2>
+  <div class="hl"><div class="hl-n">1</div><p><strong>Comprehensive survey of 652 publications</strong> spanning four major subsurface interpretation directions, with citation network analysis revealing cross-domain knowledge flow and methodological evolution.</p></div>
+  <div class="hl"><div class="hl-n">2</div><p><strong>Systematic review of deep learning methods</strong> across structure, geobody, facies, and property tasks, with task-specific recommendations and development pathways.</p></div>
+  <div class="hl"><div class="hl-n">3</div><p><strong>Introduction of CIG-Bench</strong>, an open-source benchmark covering fault interpretation, geobody segmentation, RGT estimation, and property modeling with cross-survey transferable baselines.</p></div>
+</div></div>
+
+<!-- Overview -->
+<!-- <div class="sec fade" id="overview"><div class="wrap-w">
+  <h2 class="sec-title">Citation Network &amp; Knowledge Flow</h2>
+  <div class="fig fig-sm">
+    <img src="static/images/01.jpg" alt="Citation network">
+    <p class="fig-cap"><strong>Figure 1.</strong> Citation network from 652 papers revealing cross-domain knowledge flow among structure, geobody, facies, and property. (a) Paper-level citation network. (b,c) In/out-degree statistics. (d) Citation impact matrix. (e,f) Patterns after removing self-citations. (g,h) Paradigm shift toward deep learning (2015–2025).</p>
+  </div>
+</div></div> -->
+
+<!-- Tasks -->
+<div class="sec fade" id="tasks"><div class="wrap">
+  <h2 class="sec-title">Interpretation Tasks</h2>
+  <div class="tasks">
+    <div class="tcard"><span class="ico">🏗️</span><h3>Structure</h3><p>Faults, horizons, unconformities, and relative geologic time (RGT) estimation for constructing structural frameworks.</p></div>
+    <div class="tcard"><span class="ico">🪨</span><h3>Geobody</h3><p>3D segmentation of salt bodies, channels, karst cavities, and igneous intrusions with independent geometries.</p></div>
+    <div class="tcard"><span class="ico">📊</span><h3>Facies</h3><p>Classification of seismic units by amplitude, frequency, continuity, and stratification reflecting depositional environments.</p></div>
+    <div class="tcard"><span class="ico">🔬</span><h3>Property</h3><p>Inversion of impedance, velocity, porosity, and density from seismic data calibrated with well logs.</p></div>
+  </div>
+</div></div>
+
+<!-- Evolution Carousel -->
+<div class="sec fade" id="evolution"><div class="wrap-w">
+  <h2 class="sec-title">Evolution of Research Paradigms</h2>
+  <p style="text-align:center;color:var(--text2);margin-bottom:22px;font-size:13.5px;">Click tabs or use arrows to explore the evolution of each task category.</p>
+
+  <div class="carousel" id="evoC">
+    <div class="c-tabs" id="evoTabs">
+      <button class="c-tab on" onclick="evoGo(0)">🏗️ Structure</button>
+      <button class="c-tab" onclick="evoGo(1)">🪨 Geobody</button>
+      <button class="c-tab" onclick="evoGo(2)">📊 Facies</button>
+      <button class="c-tab" onclick="evoGo(3)">🔬 Property</button>
+    </div>
+    <button class="c-btn prev" onclick="evoMv(-1)"><i class="fas fa-chevron-left"></i></button>
+    <button class="c-btn next" onclick="evoMv(1)"><i class="fas fa-chevron-right"></i></button>
+    <div class="c-track-wrap"><div class="c-track" id="evoTrack">
+      <div class="c-slide">
+        <img src="static/images/02.jpg" alt="Structure timeline">
+        <div class="c-cap"><strong>Figure 2 · Structure.</strong> From seismic attributes (2015–16) through ML penetration and synthetic-data era (FaultSeg3D, 2019) to domain foundation models (GEM/SAM, 2024–25).</div>
+      </div>
+      <div class="c-slide">
+        <img src="static/images/03.jpg" alt="Geobody timeline">
+        <div class="c-cap"><strong>Figure 3 · Geobody.</strong> From multiscale attribute enhancement to TGS Salt Challenge, 3D end-to-end segmentation, and SAM-style prompting with unified foundation frameworks.</div>
+      </div>
+      <div class="c-slide">
+        <img src="static/images/04.jpg" alt="Facies timeline">
+        <div class="c-cap"><strong>Figure 4 · Facies.</strong> From attribute-based clustering and SOM through deep feature clustering and contrastive learning to self-supervised pretraining and cross-survey generalization.</div>
+      </div>
+      <div class="c-slide">
+        <img src="static/images/05.jpg" alt="Property timeline">
+        <div class="c-cap"><strong>Figure 5 · Property.</strong> From physics-driven inversion (Bayesian/geostatistical) through end-to-end deep inversion to foundation models (GEM) and cross-survey generalisation.</div>
+      </div>
+    </div></div>
+    <div class="c-dots" id="evoDots">
+      <button class="c-dot on" onclick="evoGo(0)"></button>
+      <button class="c-dot" onclick="evoGo(1)"></button>
+      <button class="c-dot" onclick="evoGo(2)"></button>
+      <button class="c-dot" onclick="evoGo(3)"></button>
+    </div>
+  </div>
+</div></div>
+
+
+<!-- CIG-Bench Carousel -->
+<div class="sec fade" id="benchmark"><div class="wrap-w">
+  <h2 class="sec-title">CIG-Bench Results</h2>
+  <p style="text-align:center;color:var(--text2);margin-bottom:22px;font-size:13.5px;">Qualitative results of CIG-Bench baselines. Use arrows or swipe to navigate.</p>
+
+  <div class="carousel" id="benchC">
+    <div class="c-tabs" id="benchTabs">
+      <button class="c-tab on" onclick="benchGo(0)">🏗️ Structure</button>
+      <button class="c-tab" onclick="benchGo(1)">🪨 Geobody</button>
+      <button class="c-tab" onclick="benchGo(2)">🔬 Property</button>
+    </div>
+    <button class="c-btn prev" onclick="benchMv(-1)"><i class="fas fa-chevron-left"></i></button>
+    <button class="c-btn next" onclick="benchMv(1)"><i class="fas fa-chevron-right"></i></button>
+    <div class="c-track-wrap"><div class="c-track" id="benchTrack">
+      <div class="c-slide">
+        <img src="static/images/06.jpg" alt="CIG-Bench Structure">
+        <div class="c-cap"><strong>CIG-Bench · Structure.</strong> (a) Netherlands F3; (b) Costa Rica; (c) Netherlands G3D (Fault); (d) New Zealand Kerry; (e) Netherlands G3D (RGT); (f) New Zealand Poseidon.</div>
+      </div>
+      <div class="c-slide">
+        <img src="static/images/07.jpg" alt="CIG-Bench Geobody">
+        <div class="c-cap"><strong>CIG-Bench · Geobody.</strong> (a) Romney; (b) New Zealand Parihaka; (c) Netherlands G3D. Covers channel and karst segmentation with standardized 3D evaluation.</div>
+      </div>
+      <div class="c-slide">
+        <img src="static/images/08.jpg" alt="CIG-Bench Property">
+        <div class="c-cap"><strong>CIG-Bench · Property.</strong> Following the GEM workflow. (a) Netherlands F3; (b) New Zealand Poseidon part 1; (c) New Zealand Poseidon part 2.</div>
+      </div>
+    </div></div>
+    <div class="c-dots" id="benchDots">
+      <button class="c-dot on" onclick="benchGo(0)"></button>
+      <button class="c-dot" onclick="benchGo(1)"></button>
+      <button class="c-dot" onclick="benchGo(2)"></button>
+    </div>
+  </div>
+</div></div>
+
+<!-- Citation -->
+<div class="sec fade" id="citation"><div class="wrap">
+  <h2 class="sec-title">Citation</h2>
+  <p style="text-align:center;color:var(--text2);margin-bottom:16px;font-size:13px;">If you find this survey or benchmark useful, please cite our work:</p>
+  <div class="bib">
+    <button class="bib-cp" onclick="cpBib()"><i class="fas fa-copy"></i> Copy</button>
+    <pre>@article{dou2025cigbench,
+  title   = {CIG-Bench: A Comprehensive Survey and Benchmark
+             for ML-Driven Subsurface Imaging Interpretation},
+  author  = {Dou, Yimin and Wu, Xinming},
+  year    = {2025},
+  institution = {University of Science and Technology of China}
+}</pre>
+  </div>
+</div></div>
+
+<footer>
+  <a href="https://github.com/douyimin/CIG-bench" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+  &nbsp;·&nbsp; University of Science and Technology of China
+  &nbsp;·&nbsp; Template adapted from <a href="https://github.com/eliahuhorwitz/Academic-project-page-template">Academic Project Page</a>
+</footer>
+
+<script>
+// ─── Generic carousel factory ───
+function makeCarousel(trackId, dotsId, tabsId, n) {
+  let cur = 0;
+  const track = document.getElementById(trackId);
+  const dots = document.getElementById(dotsId).querySelectorAll('.c-dot');
+  const tabs = tabsId ? document.getElementById(tabsId).querySelectorAll('.c-tab') : [];
+
+  function upd() {
+    track.style.transform = `translateX(-${cur*100}%)`;
+    dots.forEach((d,i) => d.classList.toggle('on', i===cur));
+    tabs.forEach((t,i) => t.classList.toggle('on', i===cur));
+  }
+  function go(i) { cur = i; upd(); }
+  function mv(d) { cur = (cur+d+n)%n; upd(); }
+
+  // Touch
+  let sx = 0;
+  const wrap = track.parentElement;
+  wrap.addEventListener('touchstart', e => { sx = e.touches[0].clientX; }, {passive:true});
+  wrap.addEventListener('touchend', e => {
+    const diff = sx - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) mv(diff > 0 ? 1 : -1);
+  }, {passive:true});
+
+  return { go, mv };
+}
+
+const evo = makeCarousel('evoTrack', 'evoDots', 'evoTabs', 4);
+function evoGo(i) { evo.go(i); }
+function evoMv(d) { evo.mv(d); }
+
+const bench = makeCarousel('benchTrack', 'benchDots', 'benchTabs', 3);
+function benchGo(i) { bench.go(i); }
+function benchMv(d) { bench.mv(d); }
+
+// Keyboard: detect which carousel is more visible
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+    const d = e.key === 'ArrowRight' ? 1 : -1;
+    const evoEl = document.getElementById('evoC');
+    const benchEl = document.getElementById('benchC');
+    const evoR = evoEl.getBoundingClientRect();
+    const benchR = benchEl.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const evoVis = Math.max(0, Math.min(evoR.bottom, vh) - Math.max(evoR.top, 0));
+    const benchVis = Math.max(0, Math.min(benchR.bottom, vh) - Math.max(benchR.top, 0));
+    if (benchVis > evoVis) benchMv(d); else evoMv(d);
+  }
+});
+
+function cpBib() {
+  const t = document.querySelector('.bib pre').textContent;
+  navigator.clipboard.writeText(t).then(() => {
+    const b = document.querySelector('.bib-cp');
+    b.innerHTML = '<i class="fas fa-check"></i> Copied!';
+    setTimeout(() => { b.innerHTML = '<i class="fas fa-copy"></i> Copy'; }, 2000);
+  });
+}
+
+const obs = new IntersectionObserver(es => {
+  es.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
+}, {threshold:.1});
+document.querySelectorAll('.fade').forEach(el => obs.observe(el));
+</script>
+</body></html>
