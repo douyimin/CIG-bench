@@ -5,7 +5,6 @@ import torch
 from torch import Tensor, nn
 import torch.nn.functional as F
 
-
 Int3 = Tuple[int, int, int]
 
 
@@ -22,12 +21,12 @@ def _ceil_div(a: int, b: int) -> int:
 
 
 def _tile_index_3d(
-    i: int,
-    j: int,
-    k: int,
-    block_size: int,
-    shape: Int3,
-    halo: int,
+        i: int,
+        j: int,
+        k: int,
+        block_size: int,
+        shape: Int3,
+        halo: int,
 ):
     """Return valid region, padded patch region, crop region and F.pad list.
 
@@ -89,12 +88,12 @@ def _conv_out_size_1d(in_size: int, kernel: int, stride: int, padding: int, dila
 
 @torch.no_grad()
 def interpolate3d_chunked(
-    x: Tensor,
-    block_size: int = 64,
-    scale_factor: int = 2,
-    mode: str = "nearest",
-    align_corners: Optional[bool] = None,
-    size: Optional[Int3] = None,
+        x: Tensor,
+        block_size: int = 64,
+        scale_factor: int = 2,
+        mode: str = "nearest",
+        align_corners: Optional[bool] = None,
+        size: Optional[Int3] = None,
 ) -> Tensor:
     """Operator-level chunked interpolation.
 
@@ -123,14 +122,17 @@ def interpolate3d_chunked(
     nd, nh, nw = _ceil_div(d, tile), _ceil_div(h, tile), _ceil_div(w, tile)
 
     for ii, jj, kk in itertools.product(range(nd), range(nh), range(nw)):
-        (vd0, vh0, vw0, vd1, vh1, vw1), (pd0, ph0, pw0, pd1, ph1, pw1), (rd0, rh0, rw0, rd1, rh1, rw1), _ = _tile_index_3d(
+        (vd0, vh0, vw0, vd1, vh1, vw1), (pd0, ph0, pw0, pd1, ph1, pw1), (rd0, rh0, rw0, rd1, rh1,
+                                                                         rw1), _ = _tile_index_3d(
             ii, jj, kk, tile, (d, h, w), halo
         )
         patch = x[:, :, pd0:pd1, ph0:ph1, pw0:pw1]
         patch = F.interpolate(patch, scale_factor=scale_factor, mode=mode, align_corners=align_corners)
-        out[:, :, vd0 * scale_factor:vd1 * scale_factor, vh0 * scale_factor:vh1 * scale_factor, vw0 * scale_factor:vw1 * scale_factor] = patch[
-            :, :, rd0 * scale_factor:rd1 * scale_factor, rh0 * scale_factor:rh1 * scale_factor, rw0 * scale_factor:rw1 * scale_factor
-        ]
+        out[
+            :, :, vd0 * scale_factor:vd1 * scale_factor, vh0 * scale_factor:vh1 * scale_factor, vw0 * scale_factor:vw1 * scale_factor] = \
+            patch[
+                :, :, rd0 * scale_factor:rd1 * scale_factor, rh0 * scale_factor:rh1 * scale_factor, rw0 * scale_factor:rw1 * scale_factor
+            ]
     return out
 
 
@@ -411,49 +413,55 @@ class HRNet(nn.Module):
 
     def __init__(self, c=32, out_channels: int = 1):
         super().__init__()
+        assert c >= 2 and c % 2 == 0, "c must be an even integer >= 2 because this HRNet uses c // 2 channels in skip_layer1/decoder."
         self.base = c
         self.out_channels = out_channels
 
         self.skip_layer1 = nn.Sequential(
-            nn.Conv3d(1, 16, kernel_size=3, stride=1, padding=1, bias=False),
-            nn.BatchNorm3d(16),
+            nn.Conv3d(1, c // 2, kernel_size=3, stride=1, padding=1, bias=False),
+            nn.BatchNorm3d(c // 2),
             nn.SiLU(inplace=True),
-            nn.Conv3d(16, 16, kernel_size=3, stride=1, padding=1, bias=False),
-            nn.BatchNorm3d(16),
+            nn.Conv3d(c // 2, c // 2, kernel_size=3, stride=1, padding=1, bias=False),
+            nn.BatchNorm3d(c // 2),
             nn.SiLU(inplace=True),
         )
+        # skip_layer2: 1/2 分辨率, 16 -> 64 通道 (用 stride=2 替代原 conv1 的下采样)
         self.skip_layer2 = nn.Sequential(
-            nn.Conv3d(16, 32, kernel_size=3, stride=2, padding=1, bias=False),
-            nn.BatchNorm3d(32),
+            nn.Conv3d(c // 2, c, kernel_size=3, stride=2, padding=1, bias=False),
+            nn.BatchNorm3d(c),
             nn.SiLU(inplace=True),
-            nn.Conv3d(32, 32, kernel_size=3, stride=1, padding=1, bias=False),
-            nn.BatchNorm3d(32),
+            nn.Conv3d(c, c, kernel_size=3, stride=1, padding=1, bias=False),
+            nn.BatchNorm3d(c),
             nn.SiLU(inplace=True),
         )
 
-        self.conv2 = nn.Conv3d(32, 64, kernel_size=3, stride=2, padding=1, bias=False)
-        self.norm2 = nn.BatchNorm3d(64)
+        # Input (stem net) - conv1 已被 skip_layer1+skip_layer2 替代, 这里只保留 conv2
+        # self.conv1 = nn.Conv3d(1, 64, kernel_size=(3, 3, 3), stride=(2, 2, 2), padding=(1, 1, 1), bias=False)
+        # self.norm1 = nn.BatchNorm3d(64)
+        self.conv2 = nn.Conv3d(c, c * 2, kernel_size=(3, 3, 3), stride=(2, 2, 2), padding=(1, 1, 1), bias=False)
+        self.norm2 = nn.BatchNorm3d(c * 2)
         self.act_fun = nn.SiLU(inplace=True)
 
+        # Stage 1 (layer1)      - First group of bottleneck (resnet) modules
         downsample = nn.Sequential(
-            nn.Conv3d(64, 256, kernel_size=1, stride=1, bias=False),
-            nn.BatchNorm3d(256),
+            nn.Conv3d(c * 2, c * 8, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False),
+            nn.BatchNorm3d(c * 8),
         )
         self.layer1 = nn.Sequential(
-            Bottleneck(64, 64, downsample=downsample),
-            Bottleneck(256, 64),
-            Bottleneck(256, 64),
-            Bottleneck(256, 64),
+            Bottleneck(c * 2, c * 2, downsample=downsample),
+            Bottleneck(c * 8, c * 2),
+            Bottleneck(c * 8, c * 2),
+            Bottleneck(c * 8, c * 2),
         )
 
         self.transition1 = nn.ModuleList([
             nn.Sequential(
-                nn.Conv3d(256, c, kernel_size=3, stride=1, padding=1, bias=False),
+                nn.Conv3d(c * 8, c, kernel_size=3, stride=1, padding=1, bias=False),
                 nn.BatchNorm3d(c),
                 nn.SiLU(inplace=True),
             ),
             nn.Sequential(nn.Sequential(
-                nn.Conv3d(256, c * 2, kernel_size=3, stride=2, padding=1, bias=False),
+                nn.Conv3d(c * 8, c * 2, kernel_size=3, stride=2, padding=1, bias=False),
                 nn.BatchNorm3d(c * 2),
                 nn.SiLU(inplace=True),
             )),
@@ -490,19 +498,20 @@ class HRNet(nn.Module):
             BasicBlock(c, c),
         )
         self.dec_block2 = nn.Sequential(
-            nn.ConvTranspose3d(c + 32, 16, kernel_size=4, stride=2, padding=1, bias=False),
-            nn.BatchNorm3d(16),
+            nn.ConvTranspose3d(c + c, c // 2, kernel_size=4, stride=2, padding=1, bias=False),
+            # cat skip_x2 后通道 = c + 64
+            nn.BatchNorm3d(c // 2),
             nn.SiLU(inplace=True),
-            BasicBlock(16, 16),
+            BasicBlock(c // 2, c // 2)
         )
         self.dec_out = nn.Sequential(
-            nn.Conv3d(16 + 16, 16, kernel_size=3, padding=1),
-            nn.BatchNorm3d(16),
+            nn.Conv3d(c // 2 + c // 2, c // 2, kernel_size=3, padding=1),  # cat skip_x1 后通道 = 16 + 16
+            nn.BatchNorm3d(c // 2),
             nn.SiLU(inplace=True),
-            nn.Conv3d(16, 16, kernel_size=3, padding=1),
-            nn.BatchNorm3d(16),
+            nn.Conv3d(c // 2, c // 2, kernel_size=3, padding=1),  # cat skip_x1 后通道 = 16 + 16
+            nn.BatchNorm3d(c // 2),
             nn.SiLU(inplace=True),
-            nn.Conv3d(16, out_channels, kernel_size=3, padding=1),
+            nn.Conv3d(c // 2, out_channels, kernel_size=3, padding=1),
         )
 
     def set_upsample_chunk_size(self, chunk_size: Optional[int]):
@@ -523,7 +532,8 @@ class HRNet(nn.Module):
         if chunk_size is None:
             x = torch.cat([x[0], F.interpolate(x[1], size=x[0].shape[2:], mode="nearest")], dim=1)
         else:
-            x = torch.cat([x[0], interpolate3d_chunked(x[1], chunk_size, 2, mode="nearest", size=x[0].shape[2:])], dim=1)
+            x = torch.cat([x[0], interpolate3d_chunked(x[1], chunk_size, 2, mode="nearest", size=x[0].shape[2:])],
+                          dim=1)
         return x
 
     def forward_raw(self, x: Tensor) -> Tensor:
@@ -574,7 +584,6 @@ class HRNet(nn.Module):
         rw1 = rw0 + (pw1 - pw0)
         return y[:, :, rd0:rd1, rh0:rh1, rw0:rw1]
 
-
     @torch.no_grad()
     def _skip2_from_input_chunked(self, inp: Tensor, chunk_size: int) -> Tensor:
         """Compute skip_layer2 without ever materializing the full-resolution skip_x1.
@@ -586,8 +595,13 @@ class HRNet(nn.Module):
         """
         assert not self.training, "_skip2_from_input_chunked is only valid in eval mode."
         b, _, d, h, w = inp.shape
-        d2, h2, w2 = d // 2, h // 2, w // 2
-        out = torch.empty((b, 32, d2, h2, w2), device=inp.device, dtype=inp.dtype)
+        # skip_layer2[0] is a stride-2 Conv3d with kernel=3, padding=1.
+        # Its output size is ceil(input_size / 2), not always input_size // 2.
+        d2 = _conv_out_size_1d(d, 3, 2, 1, 1)
+        h2 = _conv_out_size_1d(h, 3, 2, 1, 1)
+        w2 = _conv_out_size_1d(w, 3, 2, 1, 1)
+        out_channels = self.skip_layer2[-2].num_features  # equals self.base, but stays robust if the stem is edited
+        out = torch.empty((b, out_channels, d2, h2, w2), device=inp.device, dtype=inp.dtype)
 
         # A conservative halo in the half-resolution grid. This covers:
         # skip_layer2 conv(stride=2, k=3) + skip_layer2 conv(stride=1, k=3)
@@ -628,11 +642,11 @@ class HRNet(nn.Module):
 
     @torch.no_grad()
     def _conv_transpose3d_region(
-        self,
-        x: Tensor,
-        deconv: nn.ConvTranspose3d,
-        out_region: Tuple[int, int, int, int, int, int],
-        safety: int = 3,
+            self,
+            x: Tensor,
+            deconv: nn.ConvTranspose3d,
+            out_region: Tuple[int, int, int, int, int, int],
+            safety: int = 3,
     ) -> Tensor:
         """Return ``deconv(x)`` cropped to a requested full-resolution output region.
 
@@ -665,7 +679,6 @@ class HRNet(nn.Module):
         y = self.dec_block2[3](y)
         return y
 
-
     def _run_dec_out_padded(self, patch: Tensor, padlist: Sequence[int]) -> Tensor:
         """Run dec_out on a padded patch and keep artificial halos zero between convs."""
         y = self.dec_out[0](patch)
@@ -681,12 +694,12 @@ class HRNet(nn.Module):
 
     @torch.no_grad()
     def _dec_out_chunked(
-        self,
-        x: Tensor,
-        skip_x1: Optional[Tensor],
-        inp: Optional[Tensor],
-        chunk_size: int,
-        halo: int = 3,
+            self,
+            x: Tensor,
+            skip_x1: Optional[Tensor],
+            inp: Optional[Tensor],
+            chunk_size: int,
+            halo: int = 3,
     ) -> Tensor:
         """Fused and chunked final decoder.
 
@@ -701,7 +714,8 @@ class HRNet(nn.Module):
         nd, nh, nw = _ceil_div(d, chunk_size), _ceil_div(h, chunk_size), _ceil_div(w, chunk_size)
 
         for ii, jj, kk in itertools.product(range(nd), range(nh), range(nw)):
-            (vd0, vh0, vw0, vd1, vh1, vw1), (pd0, ph0, pw0, pd1, ph1, pw1), (rd0, rh0, rw0, rd1, rh1, rw1), padlist = _tile_index_3d(
+            (vd0, vh0, vw0, vd1, vh1, vw1), (pd0, ph0, pw0, pd1, ph1, pw1), (rd0, rh0, rw0, rd1, rh1,
+                                                                             rw1), padlist = _tile_index_3d(
                 ii, jj, kk, chunk_size, (d, h, w), halo
             )
             x_patch = x[:, :, pd0:pd1, ph0:ph1, pw0:pw1]
@@ -715,7 +729,6 @@ class HRNet(nn.Module):
             patch = self._run_dec_out_padded(patch, padlist)
             out[:, :, vd0:vd1, vh0:vh1, vw0:vw1] = patch[:, :, rd0:rd1, rh0:rh1, rw0:rw1]
         return out
-
 
     @torch.no_grad()
     def _decode_tail_rank4(self, z_half: Tensor, inp: Tensor, chunk_size: int) -> Tensor:
@@ -734,8 +747,8 @@ class HRNet(nn.Module):
         d, h, w = dh * 2, hh * 2, wh * 2
         out = torch.empty((b, self.out_channels, d, h, w), device=z_half.device, dtype=z_half.dtype)
 
-        dec_out_halo = 3      # three 3x3x3 convolutions in dec_out
-        basic_halo = 2        # two 3x3x3 convolutions in BasicBlock
+        dec_out_halo = 3  # three 3x3x3 convolutions in dec_out
+        basic_halo = 2  # two 3x3x3 convolutions in BasicBlock
         total_halo = dec_out_halo + basic_halo
 
         nd, nh, nw = _ceil_div(d, chunk_size), _ceil_div(h, chunk_size), _ceil_div(w, chunk_size)
@@ -773,7 +786,6 @@ class HRNet(nn.Module):
             rd0, rh0, rw0, rd1, rh1, rw1 = dec_crop
             out[:, :, vd0:vd1, vh0:vh1, vw0:vw1] = patch[:, :, rd0:rd1, rh0:rh1, rw0:rw1]
         return out
-
 
     @torch.no_grad()
     def forward_efficient(self, x: Tensor, rank: int = 1, chunk_size: int = 64) -> Tensor:
@@ -828,7 +840,7 @@ class HRNet(nn.Module):
             for m, old in old_chunk:
                 m.chunk_size = old
 
-    def forward(self, x: Tensor, rank: int = 4, chunk_size: int = 64) -> Tensor:
+    def forward(self, x: Tensor, rank: int = 0, chunk_size: int = 64) -> Tensor:
         if rank == 0:
             return self.forward_raw(x)
         return self.forward_efficient(x, rank=rank, chunk_size=chunk_size)
@@ -837,7 +849,7 @@ class HRNet(nn.Module):
 if __name__ == "__main__":
     # Keep this self-check small. Large-volume tests should be run on GPU with model.eval().
     torch.set_num_threads(1)
-    model = HRNet(c=1).eval()
+    model = HRNet(c=16).eval()
     inp = torch.randn(1, 1, 8, 8, 8)
     with torch.no_grad():
         out0 = model(inp, rank=0)
