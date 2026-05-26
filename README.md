@@ -218,9 +218,6 @@ predictor = FaultPredictor(
 )
 ```
 
-> ⚠️ All weights are stored as **`.pth` state dicts** and loaded via
-> `model.load_state_dict(torch.load(path, map_location="cpu"))`. The legacy
-> `torch.jit.load` path is no longer supported.
 
 To change the default repository IDs, edit `MODELSCOPE_DEFAULT_MODEL_ID` /
 `HF_DEFAULT_MODEL_ID` (or the per-task entries) in
