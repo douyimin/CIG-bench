@@ -3,7 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CIG-Bench: Survey & Benchmark for Subsurface Imaging</title>
+  <title>CIG-Bench: Survey &amp; Benchmark for AI-Driven Subsurface Imaging Understanding</title>
+  <meta name="description" content="A comprehensive survey of 652 publications and an open-source benchmark library for ML-driven subsurface seismic interpretation: fault, RGT, channel, karst, and property modeling.">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -25,14 +27,14 @@
     .topbar{height:3px;background:linear-gradient(90deg,var(--accent),var(--gold),var(--accent));position:fixed;top:0;left:0;right:0;z-index:1000}
 
     nav{position:sticky;top:3px;z-index:999;background:rgba(250,250,248,0.9);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
-    .nav-in{max-width:780px;margin:0 auto;display:flex;justify-content:center;gap:0}
-    .nav-in a{font-size:12.5px;font-weight:500;color:var(--text2);text-decoration:none;padding:12px 16px;border-bottom:2px solid transparent;transition:all .2s;letter-spacing:.02em}
+    .nav-in{max-width:900px;margin:0 auto;display:flex;justify-content:center;gap:0;flex-wrap:wrap}
+    .nav-in a{font-size:12.5px;font-weight:500;color:var(--text2);text-decoration:none;padding:12px 14px;border-bottom:2px solid transparent;transition:all .2s;letter-spacing:.02em;white-space:nowrap}
     .nav-in a:hover{color:var(--accent);border-bottom-color:var(--accent)}
 
     .wrap{max-width:720px;margin:0 auto;padding:0 20px}
-    .wrap-w{max-width:860px;margin:0 auto;padding:0 20px}
+    .wrap-w{max-width:920px;margin:0 auto;padding:0 20px}
 
-    .hero{padding:64px 20px 40px;text-align:center;max-width:760px;margin:0 auto}
+    .hero{padding:64px 20px 40px;text-align:center;max-width:820px;margin:0 auto}
     .badge{display:inline-block;font-family:var(--mono);font-size:11px;font-weight:500;color:var(--accent);background:var(--accent-bg);padding:5px 16px;border-radius:100px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:22px}
     .hero h1{font-family:var(--serif);font-size:clamp(24px,3.5vw,36px);font-weight:700;line-height:1.22;margin-bottom:24px}
     .hero h1 em{font-style:normal;background:linear-gradient(120deg,var(--accent),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
@@ -54,24 +56,25 @@
     .sec{padding:44px 0}
     .sec-title{font-family:var(--serif);font-size:22px;font-weight:600;text-align:center;margin-bottom:24px;color:var(--text)}
     .sec-title::after{content:'';display:block;width:36px;height:2px;background:var(--accent);margin:10px auto 0;border-radius:2px}
+    .sec-sub{text-align:center;color:var(--text2);margin-bottom:22px;font-size:13.5px;max-width:680px;margin-left:auto;margin-right:auto}
 
     .abs-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:32px 36px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
     .abs-box p{font-family:var(--serif);font-size:14px;line-height:1.85;color:var(--text2);text-align:justify;hyphens:auto}
     .abs-box p+p{margin-top:12px}
     .abs-box strong{color:var(--text)}
 
-    .stats{display:flex;justify-content:center;gap:36px;flex-wrap:wrap;padding:28px 0;margin:0 auto;border-top:1px solid var(--border);border-bottom:1px solid var(--border);max-width:600px}
+    .stats{display:flex;justify-content:center;gap:36px;flex-wrap:wrap;padding:28px 0;margin:0 auto;border-top:1px solid var(--border);border-bottom:1px solid var(--border);max-width:760px}
     .stat-n{font-family:var(--mono);font-size:26px;font-weight:600;color:var(--accent);text-align:center}
-    .stat-l{font-size:11.5px;color:var(--text2);text-align:center;margin-top:2px}
+    .stat-l{font-size:11.5px;color:var(--text2);text-align:center;margin-top:2px;letter-spacing:.04em}
 
-    .fig{margin:28px 0;text-align:center}
+    .fig{margin:18px 0;text-align:center}
     .fig img{max-width:100%;height:auto;border-radius:6px;border:1px solid var(--border);box-shadow:0 1px 8px rgba(0,0,0,.05)}
-    .fig-cap{font-size:12.5px;color:var(--text2);margin-top:10px;line-height:1.6;max-width:660px;margin-left:auto;margin-right:auto;text-align:justify}
+    .fig-cap{font-size:12.5px;color:var(--text2);margin-top:10px;line-height:1.6;max-width:820px;margin-left:auto;margin-right:auto;text-align:justify}
     .fig-cap strong{color:var(--text)}
-    .fig-sm img{max-width:580px}
+    .fig-sm img{max-width:760px}
 
-    .tasks{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:20px}
-    .tcard{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:22px 20px;transition:all .2s;position:relative;overflow:hidden}
+    .tasks{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px}
+    .tcard{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px 18px;transition:all .2s;position:relative;overflow:hidden}
     .tcard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent);opacity:0;transition:opacity .2s}
     .tcard:hover{border-color:var(--accent);box-shadow:0 3px 14px rgba(45,95,138,.07);transform:translateY(-1px)}
     .tcard:hover::before{opacity:1}
@@ -80,12 +83,12 @@
     .tcard p{font-size:12.5px;line-height:1.6;color:var(--text2)}
 
     /* ─── Carousel (shared) ─── */
-    .carousel{position:relative;max-width:700px;margin:0 auto;overflow:hidden;border-radius:10px;border:1px solid var(--border);background:var(--surface);box-shadow:0 2px 12px rgba(0,0,0,.05)}
+    .carousel{position:relative;max-width:820px;margin:0 auto;overflow:hidden;border-radius:10px;border:1px solid var(--border);background:var(--surface);box-shadow:0 2px 12px rgba(0,0,0,.05)}
     .c-track-wrap{overflow:hidden}
     .c-track{display:flex;transition:transform .4s cubic-bezier(.25,.8,.25,1)}
     .c-slide{min-width:100%;padding:20px}
-    .c-slide img{width:100%;max-width:640px;height:auto;border-radius:6px;display:block;margin:0 auto}
-    .c-slide .c-cap{font-size:12.5px;color:var(--text2);margin-top:14px;line-height:1.6;text-align:justify;max-width:620px;margin-left:auto;margin-right:auto}
+    .c-slide img{width:100%;max-width:760px;height:auto;border-radius:6px;display:block;margin:0 auto}
+    .c-slide .c-cap{font-size:12.5px;color:var(--text2);margin-top:14px;line-height:1.6;text-align:justify;max-width:740px;margin-left:auto;margin-right:auto}
     .c-slide .c-cap strong{color:var(--text)}
     .c-btn{position:absolute;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.92);border:1px solid var(--border);color:var(--text);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10;transition:all .2s;box-shadow:0 2px 6px rgba(0,0,0,.08)}
     .c-btn:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
@@ -95,7 +98,7 @@
     .c-dot{width:7px;height:7px;border-radius:50%;background:var(--border);border:none;cursor:pointer;transition:all .2s;padding:0}
     .c-dot.on{background:var(--accent);width:22px;border-radius:4px}
 
-    /* Tab labels for evolution carousel */
+    /* Tab labels for carousels */
     .c-tabs{display:flex;justify-content:center;gap:6px;padding:16px 16px 0;flex-wrap:wrap}
     .c-tab{font-size:12px;font-weight:500;padding:6px 14px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text2);cursor:pointer;transition:all .2s;font-family:var(--sans)}
     .c-tab.on{background:var(--accent);color:#fff;border-color:var(--accent)}
@@ -106,6 +109,24 @@
     .hl-n{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--accent);background:var(--accent-bg);width:32px;height:32px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
     .hl p{font-size:13.5px;line-height:1.65;color:var(--text2)}
     .hl p strong{color:var(--text)}
+
+    /* Code blocks */
+    .code{background:#1E293B;border-radius:9px;padding:18px 22px;position:relative;overflow-x:auto;margin:14px 0}
+    .code pre{font-family:var(--mono);font-size:12.5px;line-height:1.65;color:#E2E8F0;white-space:pre;margin:0}
+    .code .kw{color:#7DD3FC}
+    .code .str{color:#86EFAC}
+    .code .com{color:#94A3B8;font-style:italic}
+    .code .fn{color:#FDBA74}
+    .code .num{color:#F0ABFC}
+    .code-cp{position:absolute;top:10px;right:10px;padding:5px 12px;font-size:11px;font-family:var(--sans);font-weight:500;border:1px solid rgba(255,255,255,.15);border-radius:5px;background:rgba(255,255,255,.06);color:#94A3B8;cursor:pointer;transition:all .2s}
+    .code-cp:hover{background:rgba(255,255,255,.12);color:#E2E8F0}
+    .code-label{display:inline-block;font-family:var(--mono);font-size:10.5px;font-weight:500;color:var(--accent);background:var(--accent-bg);padding:3px 10px;border-radius:4px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px}
+
+    /* Install pill */
+    .install-row{display:flex;justify-content:center;gap:0;margin:12px auto 18px;max-width:480px;background:#1E293B;border-radius:8px;padding:10px 14px;align-items:center}
+    .install-row code{font-family:var(--mono);font-size:13px;color:#E2E8F0;flex:1;background:transparent;padding:0;text-align:left;overflow-x:auto;white-space:nowrap}
+    .install-row button{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:#94A3B8;padding:4px 12px;font-size:11px;border-radius:5px;cursor:pointer;font-family:var(--sans);transition:all .2s;flex-shrink:0;margin-left:10px}
+    .install-row button:hover{background:rgba(255,255,255,.15);color:#E2E8F0}
 
     .bib{background:#1E293B;border-radius:9px;padding:20px 24px;position:relative;margin-top:16px;overflow-x:auto}
     .bib pre{font-family:var(--mono);font-size:12px;line-height:1.6;color:#CBD5E1;white-space:pre-wrap;word-break:break-all}
@@ -118,6 +139,9 @@
     .fade{opacity:0;transform:translateY(16px);transition:opacity .5s,transform .5s}
     .fade.vis{opacity:1;transform:translateY(0)}
 
+    @media(max-width:760px){
+      .tasks{grid-template-columns:repeat(2,1fr)}
+    }
     @media(max-width:600px){
       .tasks{grid-template-columns:1fr}
       .stats{gap:20px}
@@ -125,6 +149,8 @@
       .nav-in a{padding:10px 8px;font-size:11.5px}
       .c-tabs{gap:4px}
       .c-tab{font-size:11px;padding:5px 10px}
+      .code{padding:14px 16px}
+      .code pre{font-size:11.5px}
     }
   </style>
 </head>
@@ -133,26 +159,30 @@
 <div class="topbar"></div>
 <nav><div class="nav-in">
   <a href="#abstract">Abstract</a>
-  <a href="#overview">Overview</a>
+  <a href="#framework">Framework</a>
+  <a href="#overview">Survey</a>
   <a href="#tasks">Tasks</a>
   <a href="#evolution">Evolution</a>
-  <!-- <a href="#benchmark">CIG-Bench</a> -->
+  <a href="#dataset">Dataset</a>
+  <a href="#benchmark">Results</a>
+  <a href="#quickstart">Quick Start</a>
   <a href="#citation">Citation</a>
 </div></nav>
 
 <header class="hero">
   <div class="badge">Survey &amp; Benchmark · 2025</div>
-  <h1><em>CIG-Bench</em>: A Comprehensive Survey and Benchmark for ML-Driven Subsurface Imaging Interpretation</h1>
+  <h1><em>CIG-Bench</em>: A Comprehensive Survey and Benchmark for AI-Driven Subsurface Imaging Understanding</h1>
   <div class="authors">
     <div><div class="auth-name">Yimin Dou<sup>1</sup></div></div>
     <div><div class="auth-name">Xinming Wu<sup>1,*</sup></div></div>
   </div>
-  <div class="affil"><sup>1</sup> University of Science and Technology of China, School of Earth and Space Sciences</div>
+  <div class="affil"><sup>1</sup> School of Earth and Space Sciences, University of Science and Technology of China</div>
   <div class="corr">* Corresponding author: <a href="mailto:xinmwu@ustc.edu.cn">xinmwu@ustc.edu.cn</a></div>
   <div class="actions">
     <a class="btn btn-p" href="#"><i class="fas fa-file-pdf"></i> Paper</a>
-    <a class="btn" href="https://github.com/douyimin/CIG-bench" target="_blank"><i class="fab fa-github"></i> Code</a>
-    <a class="btn" href="#"><i class="fas fa-database"></i> Dataset</a>
+    <a class="btn" href="https://github.com/douyimin/CIG-bench" target="_blank" rel="noopener"><i class="fab fa-github"></i> Code</a>
+    <a class="btn" href="https://pypi.org/project/cig-bench/" target="_blank" rel="noopener"><i class="fab fa-python"></i> PyPI</a>
+    <a class="btn" href="https://huggingface.co/" target="_blank" rel="noopener"><i class="fas fa-database"></i> Weights</a>
     <a class="btn" href="#citation"><i class="fas fa-quote-right"></i> Cite</a>
   </div>
 </header>
@@ -163,54 +193,58 @@
 <div class="sec fade" id="abstract"><div class="wrap">
   <h2 class="sec-title">Abstract</h2>
   <div class="abs-box">
-    <p>Subsurface imaging and interpretation serve as the essential link between observational data and geological models. They support quantitative analyses of structural evolution, reservoir formation processes, and multiphysics coupling, and they enhance the assessment and optimization of geological model uncertainty. In applied domains, subsurface interpretation has become a central technology for hydrocarbon exploration, geological storage site selection for CO&#8322;, and risk identification of geological hazards.</p>
-    <p>This study examines <strong>652 publications</strong> from the past decade and categorizes them into four major research directions: <em>structural interpretation</em>, <em>geobody identification</em>, <em>seismic facies analysis</em>, and <em>attribute estimation</em>. We conducted citation network analysis to characterize the intrinsic connections and knowledge flow patterns among these categories.</p>
-    <p>We introduce <strong>CIG-Bench</strong>, a benchmark suite consisting of deep learning baselines together with the corresponding datasets, enabling reproducible qualitative comparisons in terms of structural continuity, geometric consistency, geological plausibility, cross-scale stability, and interpretability.</p>
+    <p>Subsurface imaging understanding bridges observational geophysical data and quantitative geological models, underpinning applications ranging from <strong>hydrocarbon exploration</strong> and <strong>CO<sub>2</sub> storage site evaluation</strong> to <strong>geological hazard monitoring</strong>. Over the past decade, deep learning has fundamentally transformed interpretation workflows, yet the field suffers from a critical infrastructure deficit: the absence of a unified, open, and reproducible benchmark has rendered fair method comparison nearly impossible, hindered cross-study reproducibility, and fragmented community efforts.</p>
+    <p>On the <strong>survey</strong> side, we systematically analyze <strong>652 publications</strong> spanning 2015–2025, organized into four major task categories: structural interpretation (faults, horizons, RGT), geobody identification (channels, salt bodies, karst), seismic facies analysis, and property estimation (impedance, velocity, porosity). Citation-network analysis reveals asymmetric knowledge transfer patterns: structural interpretation serves as the methodological hub, geobody tasks act as cross-domain bridges, facies analysis links geometry to reservoir properties, and property estimation absorbs innovations from all domains while delivering the quantitative outputs most directly tied to industrial decisions.</p>
+    <p>As the central contribution of this article, we introduce <strong>CIG-Bench</strong>, an open-source benchmark library and evaluation platform designed not as a static dataset release but as a <em>living, community-maintained infrastructure</em>. CIG-Bench provides (1) pretrained baselines for fault segmentation, RGT estimation, geobody segmentation, and property modeling, validated across multiple real-world surveys; (2) standardized datasets with unified task definitions and evaluation protocols; (3) one-click inference and deployment APIs that dramatically lower the barrier for newcomers; and (4) a commitment to long-term maintenance, including continuous model updates and integration of community-contributed baselines.</p>
   </div>
 </div></div>
 
 <!-- Stats -->
-<!-- <div class="sec fade" style="padding-top:0;padding-bottom:0"><div class="wrap">
+<div class="sec fade" style="padding-top:0;padding-bottom:0"><div class="wrap">
   <div class="stats">
-    <div><div class="stat-n">652</div><div class="stat-l">Papers Surveyed</div></div>
-    <div><div class="stat-n">10</div><div class="stat-l">Years (2015–2025)</div></div>
-    <div><div class="stat-n">4</div><div class="stat-l">Task Categories</div></div>
-    <div><div class="stat-n">6+</div><div class="stat-l">Benchmark Datasets</div></div>
+    <div><div class="stat-n">652</div><div class="stat-l">PAPERS SURVEYED</div></div>
+    <div><div class="stat-n">10</div><div class="stat-l">YEARS (2015–2025)</div></div>
+    <div><div class="stat-n">4</div><div class="stat-l">TASK CATEGORIES</div></div>
+    <div><div class="stat-n">5</div><div class="stat-l">BENCHMARK TASKS</div></div>
   </div>
-</div></div> -->
+</div></div>
+
+<!-- Framework Overview -->
+<div class="sec fade" id="framework"><div class="wrap-w">
+  <h2 class="sec-title">An AI Framework for Subsurface Imaging</h2>
+  <p class="sec-sub">A structured overview of AI for geophysics-based subsurface imaging understanding, identifying core challenges and the AI-driven solutions that reshape existing research paradigms.</p>
+  <div class="fig">
+    <img src="static/images/000.png" alt="AI framework for subsurface imaging understanding" loading="lazy">
+    <p class="fig-cap"><strong>Figure 1.</strong> Two categories of core challenges are identified: <em>inherent imaging limitations</em> (blurriness, ambiguity, nonlinear mapping) and <em>data characteristics</em> (massive scale, heterogeneity, multi-scale features). AI-driven solutions—deep learning-based perception, probabilistic modeling, physics-informed learned mapping, efficient computing, multimodal fusion, and scale-aware learning—reshape existing research paradigms. Three open challenges define the frontier: interpretation under complex geological conditions, cross-domain semantic generalization, and benchmark dataset construction.</p>
+  </div>
+</div></div>
 
 <!-- Contributions -->
 <div class="sec fade"><div class="wrap">
   <h2 class="sec-title">Key Contributions</h2>
-  <div class="hl"><div class="hl-n">1</div><p><strong>Comprehensive survey of 652 publications</strong> spanning four major subsurface interpretation directions, with citation network analysis revealing cross-domain knowledge flow and methodological evolution.</p></div>
-  <div class="hl"><div class="hl-n">2</div><p><strong>Systematic review of deep learning methods</strong> across structure, geobody, facies, and property tasks, with task-specific recommendations and development pathways.</p></div>
-  <div class="hl"><div class="hl-n">3</div><p><strong>Introduction of CIG-Bench</strong>, an open-source benchmark covering fault interpretation, geobody segmentation, RGT estimation, and property modeling with cross-survey transferable baselines.</p></div>
+  <div class="hl"><div class="hl-n">1</div><p><strong>Decade-spanning survey of 652 publications</strong> across four subsurface interpretation directions, with citation-network analysis that reveals cross-domain knowledge flow and methodological evolution from seismic attributes to domain foundation models.</p></div>
+  <div class="hl"><div class="hl-n">2</div><p><strong>Systematic task-wise review</strong> of deep-learning methods across structure, geobody, facies, and property tasks, tracing each evolutionary trajectory and identifying the remaining bottlenecks for cross-survey generalization.</p></div>
+  <div class="hl"><div class="hl-n">3</div><p><strong>CIG-Bench open-source library</strong>: pretrained baselines for fault, RGT, channel, karst, and property tasks with cross-survey transferability, plus one-click <code>pip install</code> inference APIs that load weights automatically from ModelScope or Hugging Face.</p></div>
+  <div class="hl"><div class="hl-n">4</div><p><strong>Long-term, community-maintained ecosystem</strong>: standardized splits and metrics, continuous model updates, and a roadmap for integrating community-contributed baselines and new tasks as the field evolves.</p></div>
 </div></div>
 
-<!-- Overview -->
-<!-- <div class="sec fade" id="overview"><div class="wrap-w">
-  <h2 class="sec-title">Citation Network &amp; Knowledge Flow</h2>
-  <div class="fig fig-sm">
-    <img src="static/images/01.jpg" alt="Citation network">
-    <p class="fig-cap"><strong>Figure 1.</strong> Citation network from 652 papers revealing cross-domain knowledge flow among structure, geobody, facies, and property. (a) Paper-level citation network. (b,c) In/out-degree statistics. (d) Citation impact matrix. (e,f) Patterns after removing self-citations. (g,h) Paradigm shift toward deep learning (2015–2025).</p>
-  </div>
-</div></div> -->
 
 <!-- Tasks -->
-<div class="sec fade" id="tasks"><div class="wrap">
+<div class="sec fade" id="tasks"><div class="wrap-w">
   <h2 class="sec-title">Interpretation Tasks</h2>
+  <p class="sec-sub">Subsurface interpretation is decomposed into four conceptually overlapping but methodologically distinct categories.</p>
   <div class="tasks">
-    <div class="tcard"><span class="ico">🏗️</span><h3>Structure</h3><p>Faults, horizons, unconformities, and relative geologic time (RGT) estimation for constructing structural frameworks.</p></div>
-    <div class="tcard"><span class="ico">🪨</span><h3>Geobody</h3><p>3D segmentation of salt bodies, channels, karst cavities, and igneous intrusions with independent geometries.</p></div>
-    <div class="tcard"><span class="ico">📊</span><h3>Facies</h3><p>Classification of seismic units by amplitude, frequency, continuity, and stratification reflecting depositional environments.</p></div>
-    <div class="tcard"><span class="ico">🔬</span><h3>Property</h3><p>Inversion of impedance, velocity, porosity, and density from seismic data calibrated with well logs.</p></div>
+    <div class="tcard"><span class="ico">🏗️</span><h3>Structure</h3><p>Faults, horizons, unconformities, and relative geologic time (RGT) for constructing structural frameworks and stratigraphic models.</p></div>
+    <div class="tcard"><span class="ico">🪨</span><h3>Geobody</h3><p>3D segmentation of salt bodies, channels, karst cavities, and igneous intrusions with relatively independent geometries.</p></div>
+    <div class="tcard"><span class="ico">📊</span><h3>Facies</h3><p>Classification of seismic units by amplitude, frequency, continuity, and stratification — reflecting depositional environments.</p></div>
+    <div class="tcard"><span class="ico">🔬</span><h3>Property</h3><p>Inversion of impedance, velocity, porosity, density, and Vp from seismic data calibrated with sparse well logs.</p></div>
   </div>
 </div></div>
 
 <!-- Evolution Carousel -->
 <div class="sec fade" id="evolution"><div class="wrap-w">
   <h2 class="sec-title">Evolution of Research Paradigms</h2>
-  <p style="text-align:center;color:var(--text2);margin-bottom:22px;font-size:13.5px;">Click tabs or use arrows to explore the evolution of each task category.</p>
+  <p class="sec-sub">Click tabs or use arrows to explore the decade-long evolution of each task category.</p>
 
   <div class="carousel" id="evoC">
     <div class="c-tabs" id="evoTabs">
@@ -219,69 +253,170 @@
       <button class="c-tab" onclick="evoGo(2)">📊 Facies</button>
       <button class="c-tab" onclick="evoGo(3)">🔬 Property</button>
     </div>
-    <button class="c-btn prev" onclick="evoMv(-1)"><i class="fas fa-chevron-left"></i></button>
-    <button class="c-btn next" onclick="evoMv(1)"><i class="fas fa-chevron-right"></i></button>
+    <button class="c-btn prev" onclick="evoMv(-1)" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
+    <button class="c-btn next" onclick="evoMv(1)" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
     <div class="c-track-wrap"><div class="c-track" id="evoTrack">
       <div class="c-slide">
-        <img src="static/images/02.jpg" alt="Structure timeline">
-        <div class="c-cap"><strong>Figure 2 · Structure.</strong> From seismic attributes (2015–16) through ML penetration and synthetic-data era (FaultSeg3D, 2019) to domain foundation models (GEM/SAM, 2024–25).</div>
+        <img src="static/images/02.jpg" alt="Structure timeline" loading="lazy">
+        <div class="c-cap"><strong>Figure 5 · Structure.</strong> Seismic attributes (2015–16) → ML penetration with 2D segmentation and patch-based classification (2017–18) → synthetic-data era and 3D deep segmentation (FaultSeg3D, 2019–20) → semi-/weak supervision (2021–23) → domain foundation models (GEM/SAM, 2024–25).</div>
       </div>
       <div class="c-slide">
-        <img src="static/images/03.jpg" alt="Geobody timeline">
-        <div class="c-cap"><strong>Figure 3 · Geobody.</strong> From multiscale attribute enhancement to TGS Salt Challenge, 3D end-to-end segmentation, and SAM-style prompting with unified foundation frameworks.</div>
+        <img src="static/images/03.jpg" alt="Geobody timeline" loading="lazy">
+        <div class="c-cap"><strong>Figure 6 · Geobody.</strong> Multiscale attribute enhancement → TGS Salt Challenge and supervised 2D segmentation → 3D end-to-end volumetric segmentation with synthetic and semi-supervised training → SAM-style prompting and unified foundation frameworks (GEM).</div>
       </div>
       <div class="c-slide">
-        <img src="static/images/04.jpg" alt="Facies timeline">
-        <div class="c-cap"><strong>Figure 4 · Facies.</strong> From attribute-based clustering and SOM through deep feature clustering and contrastive learning to self-supervised pretraining and cross-survey generalization.</div>
+        <img src="static/images/04.jpg" alt="Facies timeline" loading="lazy">
+        <div class="c-cap"><strong>Figure 7 · Facies.</strong> Attribute-based clustering and SOM → deep feature clustering and contrastive learning → self-supervised pretraining and cross-survey generalization with horizon-based and sectional viewing paradigms.</div>
       </div>
       <div class="c-slide">
-        <img src="static/images/05.jpg" alt="Property timeline">
-        <div class="c-cap"><strong>Figure 5 · Property.</strong> From physics-driven inversion (Bayesian/geostatistical) through end-to-end deep inversion to foundation models (GEM) and cross-survey generalisation.</div>
+        <img src="static/images/05.jpg" alt="Property timeline" loading="lazy">
+        <div class="c-cap"><strong>Figure 8 · Property.</strong> Physics-driven inversion (Bayesian / geostatistical) → end-to-end deep inversion → foundation models (GEM) → cross-survey generalisation with unified seismic + well-log conditioning.</div>
       </div>
     </div></div>
     <div class="c-dots" id="evoDots">
-      <button class="c-dot on" onclick="evoGo(0)"></button>
-      <button class="c-dot" onclick="evoGo(1)"></button>
-      <button class="c-dot" onclick="evoGo(2)"></button>
-      <button class="c-dot" onclick="evoGo(3)"></button>
+      <button class="c-dot on" onclick="evoGo(0)" aria-label="Slide 1"></button>
+      <button class="c-dot" onclick="evoGo(1)" aria-label="Slide 2"></button>
+      <button class="c-dot" onclick="evoGo(2)" aria-label="Slide 3"></button>
+      <button class="c-dot" onclick="evoGo(3)" aria-label="Slide 4"></button>
     </div>
+  </div>
+</div></div>
+
+<!-- Benchmark Dataset -->
+<div class="sec fade" id="dataset"><div class="wrap-w">
+  <h2 class="sec-title">CIG-Bench Synthetic Dataset</h2>
+  <p class="sec-sub">A unified synthetic corpus paired with ground-truth labels for all five tasks under controlled, geologically reasonable conditions.</p>
+  <div class="fig">
+    <img src="static/images/benchdata.jpg" alt="CIG-Bench synthetic dataset samples" loading="lazy">
+    <p class="fig-cap"><strong>Figure 9.</strong> Representative samples from the CIG-Bench synthetic dataset. Rows <strong>(a, b)</strong> show seismic samples with structural annotations — raw seismic amplitude volumes, fault labels with diverse fault styles, and relative-geologic-time volumes capturing folds, unconformities, and tilted strata. Rows <strong>(c, d)</strong> show seismic samples with geobody annotations including channel and karst-cave systems of varying scales, geometries, and spatial distributions. All samples are additionally paired with acoustic-impedance and velocity volumes (not shown). Every volume shares a uniform dimension of <code>512 × 512 × 1024</code> with lateral spacing 25 m × 25 m and vertical sampling 5 m.</p>
   </div>
 </div></div>
 
 
 <!-- CIG-Bench Carousel -->
 <div class="sec fade" id="benchmark"><div class="wrap-w">
-  <h2 class="sec-title">CIG-Bench Results</h2>
-  <p style="text-align:center;color:var(--text2);margin-bottom:22px;font-size:13.5px;">Qualitative results of CIG-Bench baselines. Use arrows or swipe to navigate.</p>
+  <h2 class="sec-title">CIG-Bench Results on Field Data</h2>
+  <p class="sec-sub">Qualitative results of CIG-Bench baselines across real-world surveys. Use the tabs or arrows to navigate between tasks.</p>
 
   <div class="carousel" id="benchC">
     <div class="c-tabs" id="benchTabs">
-      <button class="c-tab on" onclick="benchGo(0)">🏗️ Structure</button>
-      <button class="c-tab" onclick="benchGo(1)">🪨 Geobody</button>
-      <button class="c-tab" onclick="benchGo(2)">🔬 Property</button>
+      <button class="c-tab on" onclick="benchGo(0)">🏗️ Fault</button>
+      <button class="c-tab" onclick="benchGo(1)">⏱️ RGT</button>
+      <button class="c-tab" onclick="benchGo(2)">🪨 Geobody</button>
+      <button class="c-tab" onclick="benchGo(3)">🔬 Property</button>
     </div>
-    <button class="c-btn prev" onclick="benchMv(-1)"><i class="fas fa-chevron-left"></i></button>
-    <button class="c-btn next" onclick="benchMv(1)"><i class="fas fa-chevron-right"></i></button>
+    <button class="c-btn prev" onclick="benchMv(-1)" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
+    <button class="c-btn next" onclick="benchMv(1)" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
     <div class="c-track-wrap"><div class="c-track" id="benchTrack">
       <div class="c-slide">
-        <img src="static/images/06.jpg" alt="CIG-Bench Structure">
-        <div class="c-cap"><strong>CIG-Bench · Structure.</strong> (a) Netherlands F3; (b) Costa Rica; (c) Netherlands G3D (Fault); (d) New Zealand Kerry; (e) Netherlands G3D (RGT); (f) New Zealand Poseidon.</div>
+        <img src="static/images/06.jpg" alt="CIG-Bench Fault results" loading="lazy">
+        <div class="c-cap"><strong>CIG-Bench · Fault.</strong> Skip-connection HRNet variant on field volumes. <em>(a)</em> Netherlands F3 fault-intensive area with subtle polygonal faults near the shallow part; <em>(b)</em> denser polygonal faults from another Netherlands survey; <em>(c)</em> USGS data with extremely dense, intersecting faults; <em>(d)</em> deep-rooted fault system from USGS, with continuous dipping planes and associated secondary faults preserved.</div>
       </div>
       <div class="c-slide">
-        <img src="static/images/07.jpg" alt="CIG-Bench Geobody">
-        <div class="c-cap"><strong>CIG-Bench · Geobody.</strong> (a) Romney; (b) New Zealand Parihaka; (c) Netherlands G3D. Covers channel and karst segmentation with standardized 3D evaluation.</div>
+        <img src="static/images/06-1.jpg" alt="CIG-Bench RGT results" loading="lazy">
+        <div class="c-cap"><strong>CIG-Bench · RGT.</strong> Relative-geologic-time estimation on field volumes from Nlog and USGS using the RGT-Est training strategy. Left: original seismic; middle: predicted RGT volumes; right: horizons extracted as iso-surfaces of the RGT volume. The predictions remain smooth and stratigraphically consistent across slope bodies, unconformities, densely faulted zones, and multi-package stratigraphy.</div>
       </div>
       <div class="c-slide">
-        <img src="static/images/08.jpg" alt="CIG-Bench Property">
-        <div class="c-cap"><strong>CIG-Bench · Property.</strong> Following the GEM workflow. (a) Netherlands F3; (b) New Zealand Poseidon part 1; (c) New Zealand Poseidon part 2.</div>
+        <img src="static/images/07.jpg" alt="CIG-Bench Geobody results" loading="lazy">
+        <div class="c-cap"><strong>CIG-Bench · Channel / Karst.</strong> Multi-scale ensemble inference at seven spatial scales with connected-component post-processing. <em>(a)</em> New Zealand Parihaka channels; <em>(b)</em> New Zealand Romney channels; <em>(c)</em> USGS G3D karst-cave systems. Left: seismic; middle: predicted segmentation overlay; right: extracted 3D geobody objects.</div>
+      </div>
+      <div class="c-slide">
+        <img src="static/images/08.jpg" alt="CIG-Bench Property results" loading="lazy">
+        <div class="c-cap"><strong>CIG-Bench · Property.</strong> Following the GEM-style conditional paradigm with seismic + sparse well-log inputs. Netherlands F3 examples: <em>(b)</em> acoustic impedance; <em>(c)</em> gamma-ray; <em>(d)</em> lithology; <em>(e)</em> sonic; <em>(f)</em> Vp. The model produces coherent 3D property distributions consistent with seismic reflection patterns despite spatially sparse well constraints.</div>
       </div>
     </div></div>
     <div class="c-dots" id="benchDots">
-      <button class="c-dot on" onclick="benchGo(0)"></button>
-      <button class="c-dot" onclick="benchGo(1)"></button>
-      <button class="c-dot" onclick="benchGo(2)"></button>
+      <button class="c-dot on" onclick="benchGo(0)" aria-label="Slide 1"></button>
+      <button class="c-dot" onclick="benchGo(1)" aria-label="Slide 2"></button>
+      <button class="c-dot" onclick="benchGo(2)" aria-label="Slide 3"></button>
+      <button class="c-dot" onclick="benchGo(3)" aria-label="Slide 4"></button>
     </div>
   </div>
+</div></div>
+
+<!-- Quick Start -->
+<div class="sec fade" id="quickstart"><div class="wrap-w">
+  <h2 class="sec-title">Quick Start</h2>
+  <p class="sec-sub">One-line install. Five predictors. Weights downloaded automatically on first call.</p>
+
+  <div class="install-row">
+    <code id="pipCmd">pip install cig_bench</code>
+    <button onclick="cpEl('pipCmd', this)">Copy</button>
+  </div>
+
+  <div style="margin-top:24px">
+    <div class="code-label">🏗️ Fault segmentation</div>
+    <div class="code">
+      <button class="code-cp" onclick="cpCode(this)"><i class="fas fa-copy"></i> Copy</button>
+<pre><span class="kw">from</span> cig_bench.predictor.fault <span class="kw">import</span> FaultPredictor
+
+fault_predictor = <span class="fn">FaultPredictor</span>(device=<span class="str">"cuda"</span>)
+prob, used = fault_predictor.<span class="fn">predict</span>(
+    seis,
+    rank=<span class="num">4</span>, chunk_size=<span class="num">64</span>,      <span class="com"># memory-bounded inference</span>
+    threshold=<span class="num">0.5</span>,
+    scale_t=<span class="num">0.5</span>, scale_h=<span class="num">0.85</span>, scale_w=<span class="num">0.85</span>,
+    resize_back=<span class="kw">True</span>,           <span class="com"># return result at the original (T,H,W)</span>
+)
+fault_predictor.<span class="fn">visualize</span>(used, prob)</pre>
+    </div>
+  </div>
+
+  <div style="margin-top:18px">
+    <div class="code-label">⏱️ Relative Geologic Time (RGT) estimation</div>
+    <div class="code">
+      <button class="code-cp" onclick="cpCode(this)"><i class="fas fa-copy"></i> Copy</button>
+<pre><span class="kw">from</span> cig_bench.predictor.rgt <span class="kw">import</span> RGTPredictor
+
+rgt_predictor = <span class="fn">RGTPredictor</span>(device=<span class="str">"cuda"</span>)
+rgt_vol, used = rgt_predictor.<span class="fn">predict</span>(seis)
+horizons     = rgt_predictor.<span class="fn">extract_horizons</span>(rgt_vol, n_horizons=<span class="num">100</span>)
+rgt_predictor.<span class="fn">visualize</span>(used, rgt_vol, horizons)</pre>
+    </div>
+  </div>
+
+  <div style="margin-top:18px">
+    <div class="code-label">🪨 Geobody segmentation (channel / karst)</div>
+    <div class="code">
+      <button class="code-cp" onclick="cpCode(this)"><i class="fas fa-copy"></i> Copy</button>
+<pre><span class="kw">from</span> cig_bench.predictor.channel <span class="kw">import</span> ChannelPredictor
+
+channel_predictor = <span class="fn">ChannelPredictor</span>(device=<span class="str">"cuda"</span>)
+scores, used = channel_predictor.<span class="fn">predict</span>(
+    seis,
+    scales=[<span class="num">0.5</span>, <span class="num">0.75</span>, <span class="num">1.0</span>, <span class="num">1.25</span>, <span class="num">1.5</span>],   <span class="com"># custom scale set</span>
+    accumulate=<span class="str">"sum"</span>,
+)
+mask = channel_predictor.<span class="fn">postprocess</span>(scores, threshold=<span class="num">0.75</span>, min_size=<span class="num">50000</span>)
+channel_predictor.<span class="fn">visualize</span>(used, scores, mask)
+
+<span class="com"># Karst follows an identical interface: only the checkpoint changes.</span>
+<span class="kw">from</span> cig_bench.predictor.karst <span class="kw">import</span> KarstPredictor
+karst_predictor = <span class="fn">KarstPredictor</span>(device=<span class="str">"cuda"</span>)</pre>
+    </div>
+  </div>
+
+  <div style="margin-top:18px">
+    <div class="code-label">🔬 Property modeling (GEM-style conditional)</div>
+    <div class="code">
+      <button class="code-cp" onclick="cpCode(this)"><i class="fas fa-copy"></i> Copy</button>
+<pre><span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">from</span> cig_bench.predictor.property <span class="kw">import</span> PropertyPredictor
+
+prop_predictor = <span class="fn">PropertyPredictor</span>(device=<span class="str">"cuda"</span>)
+vp_vol, used, wells = prop_predictor.<span class="fn">predict</span>(
+    seis, vp_log,
+    infer_shape=(<span class="num">640</span>, <span class="num">512</span>, <span class="num">512</span>),
+)
+prop_predictor.<span class="fn">visualize</span>(used, vp_vol, wells)</pre>
+    </div>
+  </div>
+
+  <p style="text-align:center;color:var(--text2);margin-top:22px;font-size:12.5px;line-height:1.7">
+    Weights download automatically on first use from <strong>ModelScope</strong> (default) or <strong>Hugging Face Hub</strong>.<br>
+    Switch globally with <code style="font-family:var(--mono);background:var(--accent-bg);padding:2px 6px;border-radius:4px;font-size:12px;">export CIG_BENCH_WEIGHT_SOURCE=huggingface</code>,
+    or per-predictor via <code style="font-family:var(--mono);background:var(--accent-bg);padding:2px 6px;border-radius:4px;font-size:12px;">source="huggingface"</code>.
+  </p>
 </div></div>
 
 <!-- Citation -->
@@ -292,7 +427,7 @@
     <button class="bib-cp" onclick="cpBib()"><i class="fas fa-copy"></i> Copy</button>
     <pre>@article{dou2025cigbench,
   title   = {CIG-Bench: A Comprehensive Survey and Benchmark
-             for ML-Driven Subsurface Imaging Interpretation},
+             for AI-Driven Subsurface Imaging Understanding},
   author  = {Dou, Yimin and Wu, Xinming},
   year    = {2025},
   institution = {University of Science and Technology of China}
@@ -301,9 +436,11 @@
 </div></div>
 
 <footer>
-  <a href="https://github.com/douyimin/CIG-bench" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+  <a href="https://github.com/douyimin/CIG-bench" target="_blank" rel="noopener"><i class="fab fa-github"></i> GitHub</a>
+  &nbsp;·&nbsp;
+  <a href="https://pypi.org/project/cig-bench/" target="_blank" rel="noopener"><i class="fab fa-python"></i> PyPI</a>
   &nbsp;·&nbsp; University of Science and Technology of China
-  &nbsp;·&nbsp; Template adapted from <a href="https://github.com/eliahuhorwitz/Academic-project-page-template">Academic Project Page</a>
+  &nbsp;·&nbsp; Template adapted from <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank" rel="noopener">Academic Project Page</a>
 </footer>
 
 <script>
@@ -338,13 +475,14 @@ const evo = makeCarousel('evoTrack', 'evoDots', 'evoTabs', 4);
 function evoGo(i) { evo.go(i); }
 function evoMv(d) { evo.mv(d); }
 
-const bench = makeCarousel('benchTrack', 'benchDots', 'benchTabs', 3);
+const bench = makeCarousel('benchTrack', 'benchDots', 'benchTabs', 4);
 function benchGo(i) { bench.go(i); }
 function benchMv(d) { bench.mv(d); }
 
 // Keyboard: detect which carousel is more visible
 document.addEventListener('keydown', e => {
   if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
     const d = e.key === 'ArrowRight' ? 1 : -1;
     const evoEl = document.getElementById('evoC');
     const benchEl = document.getElementById('benchC');
@@ -363,6 +501,24 @@ function cpBib() {
     const b = document.querySelector('.bib-cp');
     b.innerHTML = '<i class="fas fa-check"></i> Copied!';
     setTimeout(() => { b.innerHTML = '<i class="fas fa-copy"></i> Copy'; }, 2000);
+  });
+}
+
+function cpCode(btn) {
+  const pre = btn.parentElement.querySelector('pre');
+  navigator.clipboard.writeText(pre.innerText).then(() => {
+    const orig = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+    setTimeout(() => { btn.innerHTML = orig; }, 2000);
+  });
+}
+
+function cpEl(id, btn) {
+  const t = document.getElementById(id).textContent;
+  navigator.clipboard.writeText(t).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(() => { btn.textContent = orig; }, 2000);
   });
 }
 
