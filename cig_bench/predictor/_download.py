@@ -26,20 +26,6 @@ import os
 from typing import Dict, Optional, Tuple
 
 
-# ---------------------------------------------------------------------------
-# 仓库注册表
-# ---------------------------------------------------------------------------
-# 每个 task 对应:
-#   model_id : 仓库 ID(形如 "<group>/<repo>")
-#   file_path: 该仓库下的相对文件路径(必须是 .pth, 即 state_dict)
-#
-# ⚠️  下面的占位符请根据你在魔搭 / Hugging Face 实际创建的仓库进行修改：
-#     - MODELSCOPE_DEFAULT_MODEL_ID → 你的魔搭仓库 ID (例如 "JintaoLee/CIG_Bench")
-#     - HF_DEFAULT_MODEL_ID         → 你的 Hugging Face 仓库 ID (例如 "JintaoLee/CIG_Bench")
-#     如果不同任务存放在不同仓库，直接修改下面对应行的元组即可。
-#
-#     注意所有权重统一使用 .pth (load_state_dict 加载方式)，不再使用 jit 的 .pt。
-# ---------------------------------------------------------------------------
 
 MODELSCOPE_DEFAULT_MODEL_ID = "douyimin/CIG-Bench"
 HF_DEFAULT_MODEL_ID = "douyimin/CIG-Bench"
