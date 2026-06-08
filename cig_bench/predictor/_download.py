@@ -41,24 +41,27 @@ from typing import Dict, Optional, Tuple
 #     注意所有权重统一使用 .pth (load_state_dict 加载方式)，不再使用 jit 的 .pt。
 # ---------------------------------------------------------------------------
 
-MODELSCOPE_DEFAULT_MODEL_ID = "your-group/CIG-Benchmark"
-HF_DEFAULT_MODEL_ID = "your-group/CIG-Benchmark"
+MODELSCOPE_DEFAULT_MODEL_ID = "douyimin/CIG-Bench"
+HF_DEFAULT_MODEL_ID = "douyimin/CIG-Bench"
 
+# 已上传到魔搭的权重(根目录), 文件名以 CIG-Bench-<Task>.pth 命名
 MODELSCOPE_REGISTRY: Dict[str, Tuple[str, str]] = {
     # task name -> (model_id, file_path_in_repo)
-    "channel":  (MODELSCOPE_DEFAULT_MODEL_ID, "channel.pth"),
-    "fault":    (MODELSCOPE_DEFAULT_MODEL_ID, "fault.pth"),
-    "karst":    (MODELSCOPE_DEFAULT_MODEL_ID, "karst.pth"),
-    "property": (MODELSCOPE_DEFAULT_MODEL_ID, "property.pth"),
-    "rgt":      (MODELSCOPE_DEFAULT_MODEL_ID, "rgt.pth"),
+    "channel":  (MODELSCOPE_DEFAULT_MODEL_ID, "CIG-Bench-Channel.pth"),
+    "fault":    (MODELSCOPE_DEFAULT_MODEL_ID, "CIG-Bench-Fault.pth"),
+    "karst":    (MODELSCOPE_DEFAULT_MODEL_ID, "CIG-Bench-Karst.pth"),
+    "property": (MODELSCOPE_DEFAULT_MODEL_ID, "CIG-Bench-Property.pth"),
+    "rgt":      (MODELSCOPE_DEFAULT_MODEL_ID, "CIG-Bench-RGT.pth"),
 }
 
+# Hugging Face 仓库尚未创建，先填上和魔搭一致的文件名占位，
+# 等你在 HF 上传后，如果文件名/仓库名不一样，再改这里即可。
 HF_REGISTRY: Dict[str, Tuple[str, str]] = {
-    "channel":  (HF_DEFAULT_MODEL_ID, "channel.pth"),
-    "fault":    (HF_DEFAULT_MODEL_ID, "fault.pth"),
-    "karst":    (HF_DEFAULT_MODEL_ID, "karst.pth"),
-    "property": (HF_DEFAULT_MODEL_ID, "property.pth"),
-    "rgt":      (HF_DEFAULT_MODEL_ID, "rgt.pth"),
+    "channel":  (HF_DEFAULT_MODEL_ID, "CIG-Bench-Channel.pth"),
+    "fault":    (HF_DEFAULT_MODEL_ID, "CIG-Bench-Fault.pth"),
+    "karst":    (HF_DEFAULT_MODEL_ID, "CIG-Bench-Karst.pth"),
+    "property": (HF_DEFAULT_MODEL_ID, "CIG-Bench-Property.pth"),
+    "rgt":      (HF_DEFAULT_MODEL_ID, "CIG-Bench-RGT.pth"),
 }
 
 # 向后兼容：保留旧名字 WEIGHT_REGISTRY 指向魔搭注册表
