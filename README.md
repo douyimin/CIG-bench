@@ -170,7 +170,7 @@ from cig_bench.predictor.karst import KarstPredictor
 
 karst_predictor = KarstPredictor(device="cuda")
 scores, used = karst_predictor.predict(seis)
-mask = karst_predictor.postprocess(scores, threshold=0.75, min_size=50000)
+mask = karst_predictor.postprocess(scores, threshold=0.75)
 ```
 
 <div align="center">
