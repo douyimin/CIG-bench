@@ -53,6 +53,9 @@
 
     .divider{width:50px;height:2px;background:linear-gradient(90deg,var(--accent),var(--gold));margin:0 auto;border-radius:2px}
 
+    .notice{max-width:720px;margin:0 auto 8px;padding:12px 20px;background:linear-gradient(90deg,var(--accent-bg),#FFF8E8);border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:8px;font-size:13px;line-height:1.6;color:var(--text2);text-align:center}
+    .notice strong{color:var(--text)}
+
     .sec{padding:44px 0}
     .sec-title{font-family:var(--serif);font-size:22px;font-weight:600;text-align:center;margin-bottom:24px;color:var(--text)}
     .sec-title::after{content:'';display:block;width:36px;height:2px;background:var(--accent);margin:10px auto 0;border-radius:2px}
@@ -164,7 +167,6 @@
   <a href="#tasks">Tasks</a>
   <a href="#evolution">Evolution</a>
   <a href="#dataset">Dataset</a>
-  <a href="#benchmark">Results</a>
   <a href="#quickstart">Quick Start</a>
   <a href="#citation">Citation</a>
 </div></nav>
@@ -205,6 +207,8 @@
     <a class="btn" href="#citation"><i class="fas fa-quote-right"></i> Cite</a>
   </div>
 </header>
+
+<div class="notice">🚧 <strong>CIG-Bench is under active construction and continuously updated.</strong> As a living, community-maintained benchmark, we are progressively adding new baselines, datasets, evaluation protocols, and tasks — contributions and feedback are welcome.</div>
 
 <div class="divider"></div>
 
@@ -313,50 +317,10 @@
 
 
 <!-- CIG-Bench Carousel -->
-<div class="sec fade" id="benchmark"><div class="wrap-w">
-  <h2 class="sec-title">CIG-Bench Results on Field Data</h2>
-  <p class="sec-sub">Qualitative results of CIG-Bench baselines across real-world surveys. Use the tabs or arrows to navigate between tasks.</p>
-
-  <div class="carousel" id="benchC">
-    <div class="c-tabs" id="benchTabs">
-      <button class="c-tab on" onclick="benchGo(0)">🏗️ Fault</button>
-      <button class="c-tab" onclick="benchGo(1)">⏱️ RGT</button>
-      <button class="c-tab" onclick="benchGo(2)">🪨 Geobody</button>
-      <button class="c-tab" onclick="benchGo(3)">🔬 Property</button>
-    </div>
-    <button class="c-btn prev" onclick="benchMv(-1)" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
-    <button class="c-btn next" onclick="benchMv(1)" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
-    <div class="c-track-wrap"><div class="c-track" id="benchTrack">
-      <div class="c-slide">
-        <img src="https://raw.githubusercontent.com/douyimin/CIG-bench/main/assets/fault.jpg" alt="CIG-Bench Fault results" loading="lazy">
-        <div class="c-cap"><strong>CIG-Bench · Fault.</strong> Fault segmentation on four field surveys (<b>a–d</b>) with the skip-connection HRNet variant. For each example: the input seismic (columns <code>*-1</code>) and the predicted faults rendered in red over the seismic (columns <code>*-2</code>), shown on both crossline-style cubes (<b>a, b</b>) and inline sections (<b>c, d</b>). The model resolves subtle polygonal faults, extremely dense intersecting fault networks, and deep-rooted continuous dipping planes with their associated secondary faults.</div>
-      </div>
-      <div class="c-slide">
-        <img src="https://raw.githubusercontent.com/douyimin/CIG-bench/main/assets/rgt.jpg" alt="CIG-Bench RGT results" loading="lazy">
-        <div class="c-cap"><strong>CIG-Bench · RGT.</strong> Relative-geologic-time estimation on four field surveys (<b>a–d</b>). Columns: input seismic (<code>*-1</code>), the regressed relative-geologic-time volume (<code>*-2</code>), and horizons extracted from the predicted RGT volume and overlaid on the seismic (<code>*-3</code>). Predictions remain smooth and stratigraphically consistent across slope bodies, unconformities, densely faulted zones, and multi-package stratigraphy.</div>
-      </div>
-      <div class="c-slide">
-        <img src="https://raw.githubusercontent.com/douyimin/CIG-bench/main/assets/geobody.jpg" alt="CIG-Bench Geobody results" loading="lazy">
-        <div class="c-cap"><strong>CIG-Bench · Channel / Karst.</strong> Geobody segmentation on three field examples (rows <b>a–c</b>) using multi-scale ensemble inference with connected-component post-processing. Columns: input seismic (<code>*-1</code>), the predicted probability overlaid on the seismic (<code>*-2</code>), and the extracted 3D geobody surface (<code>*-3</code>) after thresholding and connected-component cleanup. <em>(a, b)</em> channel systems and <em>(c)</em> karst-cave systems.</div>
-      </div>
-      <div class="c-slide">
-        <img src="https://raw.githubusercontent.com/douyimin/CIG-bench/main/assets/property.jpg" alt="CIG-Bench Property results" loading="lazy">
-        <div class="c-cap"><strong>CIG-Bench · Property.</strong> Property modeling on a single survey following the GEM-style conditional paradigm with seismic + sparse well-log inputs. <em>(a)</em> input seismic; <em>(b–f)</em> dense 3D property volumes predicted from the seismic conditioned on sparse well logs (the thin vertical strips are the conditioning wells), with different panels corresponding to different modeled properties / colormaps — e.g. acoustic impedance, gamma-ray, lithology, sonic, and Vp. The model produces coherent property distributions consistent with the seismic reflection patterns despite spatially sparse well constraints.</div>
-      </div>
-    </div></div>
-    <div class="c-dots" id="benchDots">
-      <button class="c-dot on" onclick="benchGo(0)" aria-label="Slide 1"></button>
-      <button class="c-dot" onclick="benchGo(1)" aria-label="Slide 2"></button>
-      <button class="c-dot" onclick="benchGo(2)" aria-label="Slide 3"></button>
-      <button class="c-dot" onclick="benchGo(3)" aria-label="Slide 4"></button>
-    </div>
-  </div>
-</div></div>
-
 <!-- Quick Start -->
 <div class="sec fade" id="quickstart"><div class="wrap-w">
   <h2 class="sec-title">Quick Start</h2>
-  <p class="sec-sub">One-line install. Five predictors. Weights downloaded automatically on first call.</p>
+  <p class="sec-sub">One-line install. Five predictors. Weights downloaded automatically on first call. Each task is paired with an example result on real field data.</p>
 
   <div class="install-row">
     <code id="pipCmd">pip install cig_bench</code>
@@ -379,6 +343,10 @@ prob, used = fault_predictor.<span class="fn">predict</span>(
 )
 fault_predictor.<span class="fn">visualize</span>(used, prob)</pre>
     </div>
+    <div class="fig fig-sm" style="margin-top:14px">
+      <img src="https://raw.githubusercontent.com/douyimin/CIG-bench/main/assets/fault.jpg" alt="CIG-Bench fault segmentation results" loading="lazy">
+      <p class="fig-cap"><strong>Example result · Fault.</strong> Fault segmentation on four field surveys (<b>a–d</b>): the input seismic (columns <code>*-1</code>) and the predicted faults rendered in red over the seismic (columns <code>*-2</code>), shown on crossline-style cubes (<b>a, b</b>) and inline sections (<b>c, d</b>). The model resolves subtle polygonal faults, extremely dense intersecting networks, and deep-rooted dipping planes with associated secondary faults.</p>
+    </div>
   </div>
 
   <div style="margin-top:18px">
@@ -393,6 +361,10 @@ horizons     = rgt_predictor.<span class="fn">extract_horizons</span>(rgt_vol, n
 rgt_predictor.<span class="fn">visualize</span>(used, rgt_vol, horizons)
 <span class="com"># visualize() auto-traces horizons when none are passed:</span>
 <span class="com"># rgt_predictor.visualize(used, rgt_vol)</span></pre>
+    </div>
+    <div class="fig fig-sm" style="margin-top:14px">
+      <img src="https://raw.githubusercontent.com/douyimin/CIG-bench/main/assets/rgt.jpg" alt="CIG-Bench RGT estimation results" loading="lazy">
+      <p class="fig-cap"><strong>Example result · RGT.</strong> Relative-geologic-time estimation on four field surveys (<b>a–d</b>): input seismic (<code>*-1</code>), the regressed RGT volume (<code>*-2</code>), and horizons extracted from the RGT volume and overlaid on the seismic (<code>*-3</code>). Predictions stay smooth and stratigraphically consistent across slope bodies, unconformities, densely faulted zones, and multi-package stratigraphy.</p>
     </div>
   </div>
 
@@ -415,6 +387,10 @@ channel_predictor.<span class="fn">visualize</span>(used, scores, mask)
 <span class="kw">from</span> cig_bench.predictor.karst <span class="kw">import</span> KarstPredictor
 karst_predictor = <span class="fn">KarstPredictor</span>(device=<span class="str">"cuda"</span>)</pre>
     </div>
+    <div class="fig fig-sm" style="margin-top:14px">
+      <img src="https://raw.githubusercontent.com/douyimin/CIG-bench/main/assets/geobody.jpg" alt="CIG-Bench geobody segmentation results" loading="lazy">
+      <p class="fig-cap"><strong>Example result · Channel / Karst.</strong> Geobody segmentation on three field examples (rows <b>a–c</b>): input seismic (<code>*-1</code>), the predicted probability overlaid on the seismic (<code>*-2</code>), and the extracted 3D geobody surface (<code>*-3</code>) after thresholding and connected-component cleanup. <em>(a, b)</em> channel systems and <em>(c)</em> karst-cave systems.</p>
+    </div>
   </div>
 
   <div style="margin-top:18px">
@@ -430,6 +406,10 @@ vp_vol, used, wells = prop_predictor.<span class="fn">predict</span>(
     infer_shape=(<span class="num">640</span>, <span class="num">512</span>, <span class="num">512</span>),
 )
 prop_predictor.<span class="fn">visualize</span>(used, vp_vol, wells)</pre>
+    </div>
+    <div class="fig fig-sm" style="margin-top:14px">
+      <img src="https://raw.githubusercontent.com/douyimin/CIG-bench/main/assets/property.jpg" alt="CIG-Bench property modeling results" loading="lazy">
+      <p class="fig-cap"><strong>Example result · Property.</strong> Property modeling under the promptable conditional paradigm with seismic + sparse well-log inputs. <em>(a)</em> input seismic; <em>(b–f)</em> dense 3D property volumes predicted from the seismic conditioned on sparse well logs (the thin vertical strips are the conditioning wells) — e.g. acoustic impedance, gamma-ray, lithology, sonic, and Vp. Predictions stay coherent with the seismic reflection patterns despite spatially sparse well constraints.</p>
     </div>
   </div>
 
@@ -501,23 +481,11 @@ const evo = makeCarousel('evoTrack', 'evoDots', 'evoTabs', 4);
 function evoGo(i) { evo.go(i); }
 function evoMv(d) { evo.mv(d); }
 
-const bench = makeCarousel('benchTrack', 'benchDots', 'benchTabs', 4);
-function benchGo(i) { bench.go(i); }
-function benchMv(d) { bench.mv(d); }
-
-// Keyboard: detect which carousel is more visible
+// Keyboard navigation for the evolution carousel
 document.addEventListener('keydown', e => {
   if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-    const d = e.key === 'ArrowRight' ? 1 : -1;
-    const evoEl = document.getElementById('evoC');
-    const benchEl = document.getElementById('benchC');
-    const evoR = evoEl.getBoundingClientRect();
-    const benchR = benchEl.getBoundingClientRect();
-    const vh = window.innerHeight;
-    const evoVis = Math.max(0, Math.min(evoR.bottom, vh) - Math.max(evoR.top, 0));
-    const benchVis = Math.max(0, Math.min(benchR.bottom, vh) - Math.max(benchR.top, 0));
-    if (benchVis > evoVis) benchMv(d); else evoMv(d);
+    evoMv(e.key === 'ArrowRight' ? 1 : -1);
   }
 });
 
