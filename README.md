@@ -99,7 +99,7 @@ from cig_bench.predictor.fault import FaultPredictor
 
 fault_predictor = FaultPredictor(device="cuda")
 prob, used = fault_predictor.predict(
-    seis,
+    seis,                        # (tline,iline,xline)
     rank=4, chunk_size=64,       # memory-bounded chunked inference
     threshold=0.5,
     scale_t=0.5, scale_h=0.85, scale_w=0.85,
@@ -129,7 +129,7 @@ in-code warning).
 from cig_bench.predictor.rgt import RGTPredictor
 
 rgt_predictor = RGTPredictor(device="cuda")
-rgt_vol, used = rgt_predictor.predict(seis)
+rgt_vol, used = rgt_predictor.predict(seis)  # (tline,iline,xline)
 horizons      = rgt_predictor.extract_horizons(rgt_vol, n_horizons=100)
 rgt_predictor.visualize(used, rgt_vol, horizons)
 # visualize() also auto-traces horizons when none are passed:
@@ -155,7 +155,7 @@ from cig_bench.predictor.channel import ChannelPredictor
 
 channel_predictor = ChannelPredictor(device="cuda")
 scores, used = channel_predictor.predict(
-    seis,
+    seis,                                 # (tline,iline,xline)
     scales=[0.5, 0.75, 1.0, 1.25, 1.5],   # custom scale set
     accumulate="sum",
 )
@@ -196,7 +196,7 @@ from cig_bench.predictor.property import PropertyPredictor
 
 prop_predictor = PropertyPredictor(device="cuda")
 vp_vol, used, wells = prop_predictor.predict(
-    seis, vp_log,
+    seis, vp_log,                              # (tline,iline,xline)
     infer_shape=(640, 512, 512),
 )
 prop_predictor.visualize(used, vp_vol, wells)
