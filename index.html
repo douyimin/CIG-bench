@@ -172,11 +172,29 @@
 <header class="hero">
   <div class="badge">Survey &amp; Benchmark · 2026</div>
   <h1><em>CIG-Bench</em>: A Comprehensive Survey and Benchmark for AI-Driven Subsurface Imaging Understanding</h1>
-  <div class="authors">
+  <div class="authors" style="gap:3px 20px;margin-bottom:10px">
     <div><div class="auth-name">Yimin Dou<sup>1</sup></div></div>
     <div><div class="auth-name">Xinming Wu<sup>1,*</sup></div></div>
+    <div><div class="auth-name">Hui Gao<sup>1</sup></div></div>
+    <div><div class="auth-name">Mingliang Liu<sup>2</sup></div></div>
+    <div><div class="auth-name">Tao Zhao<sup>3</sup></div></div>
+    <div><div class="auth-name">Zhi Zhong<sup>4</sup></div></div>
+    <div><div class="auth-name">Haibin Di<sup>3</sup></div></div>
+    <div><div class="auth-name">Min Jun Park<sup>5</sup></div></div>
+    <div><div class="auth-name">Robert G. Clapp<sup>6</sup></div></div>
+    <div><div class="auth-name">Zhixiang Guo<sup>1</sup></div></div>
+    <div><div class="auth-name">Long Han<sup>1</sup></div></div>
+    <div><div class="auth-name">Sergey Fomel<sup>7</sup></div></div>
   </div>
-  <div class="affil"><sup>1</sup> School of Earth and Space Sciences, University of Science and Technology of China</div>
+  <div class="affil">
+    <sup>1</sup> School of Earth and Space Sciences, University of Science and Technology of China, Hefei, China &nbsp;·&nbsp;
+    <sup>2</sup> School of Future Technology, Shandong University, Jinan, China &nbsp;·&nbsp;
+    <sup>3</sup> Schlumberger (SLB), Houston, TX, USA &nbsp;·&nbsp;
+    <sup>4</sup> China University of Geosciences (Wuhan), Wuhan, China<br>
+    <sup>5</sup> X, the Moonshot Factory (Google X), Mountain View, CA, USA &nbsp;·&nbsp;
+    <sup>6</sup> Stanford University, Stanford, CA, USA &nbsp;·&nbsp;
+    <sup>7</sup> The University of Texas at Austin, Austin, TX, USA
+  </div>
   <div class="corr">* Corresponding author: <a href="mailto:xinmwu@ustc.edu.cn">xinmwu@ustc.edu.cn</a></div>
   <div class="actions">
     <a class="btn btn-p" href="https://arxiv.org/pdf/2606.09094" target="_blank" rel="noopener"><i class="fas fa-file-pdf"></i> Paper</a>
@@ -194,9 +212,8 @@
 <div class="sec fade" id="abstract"><div class="wrap">
   <h2 class="sec-title">Abstract</h2>
   <div class="abs-box">
-    <p>Subsurface imaging understanding bridges observational geophysical data and quantitative geological models, underpinning applications ranging from <strong>hydrocarbon exploration</strong> and <strong>CO<sub>2</sub> storage site evaluation</strong> to <strong>geological hazard monitoring</strong>. Over the past decade, deep learning has fundamentally transformed interpretation workflows, yet the field suffers from a critical infrastructure deficit: the absence of a unified, open, and reproducible benchmark has rendered fair method comparison nearly impossible, hindered cross-study reproducibility, and fragmented community efforts.</p>
-    <p>On the <strong>survey</strong> side, we systematically analyze <strong>652 publications</strong> spanning 2015–2025, organized into four major task categories: structural interpretation (faults, horizons, RGT), geobody identification (channels, salt bodies, karst), seismic facies analysis, and property estimation (impedance, velocity, porosity). Citation-network analysis reveals asymmetric knowledge transfer patterns: structural interpretation serves as the methodological hub, geobody tasks act as cross-domain bridges, facies analysis links geometry to reservoir properties, and property estimation absorbs innovations from all domains while delivering the quantitative outputs most directly tied to industrial decisions.</p>
-    <p>As the central contribution of this article, we introduce <strong>CIG-Bench</strong>, an open-source benchmark library and evaluation platform designed not as a static dataset release but as a <em>living, community-maintained infrastructure</em>. CIG-Bench provides (1) pretrained baselines for fault segmentation, RGT estimation, geobody segmentation, and property modeling, validated across multiple real-world surveys; (2) standardized datasets with unified task definitions and evaluation protocols; (3) one-click inference and deployment APIs that dramatically lower the barrier for newcomers; and (4) a commitment to long-term maintenance, including continuous model updates and integration of community-contributed baselines.</p>
+    <p>Subsurface imaging understanding bridges observed geophysical data and quantitative geological models, supporting applications such as hydrocarbon exploration, CO<sub>2</sub> storage site assessment, and geohazard monitoring. To take stock of a decade of deep-learning progress, we systematically analyze 652 publications from 2015 to 2025, organized into four major tasks: structural interpretation, geobody identification, seismic facies analysis, and property estimation.</p>
+    <p>Building on this review, we summarize three interrelated challenges that define the frontier: interpretation under complex geological conditions, cross-survey semantic generalization under low information density, and the absence of reliable benchmarks. Addressing the last, we propose a community benchmark covering fault segmentation, relative geologic time estimation, geobody segmentation, and property modeling, integrating unified evaluation protocols, pretrained models, and datasets that combine synthetic data for quantitative evaluation with real surveys for qualitative assessment.</p>
   </div>
 </div></div>
 
@@ -215,7 +232,7 @@
   <h2 class="sec-title">An AI Framework for Subsurface Imaging</h2>
   <p class="sec-sub">A structured overview of AI for geophysics-based subsurface imaging understanding, identifying core challenges and the AI-driven solutions that reshape existing research paradigms.</p>
   <div class="fig">
-    <img src="static/images/000.png" alt="AI framework for subsurface imaging understanding" loading="lazy">
+    <img src="https://raw.githubusercontent.com/douyimin/CIG-bench/main/assets/000.png" alt="AI framework for subsurface imaging understanding" loading="lazy">
     <p class="fig-cap"><strong>Figure 1.</strong> Two categories of core challenges are identified: <em>inherent imaging limitations</em> (blurriness, ambiguity, nonlinear mapping) and <em>data characteristics</em> (massive scale, heterogeneity, multi-scale features). AI-driven solutions—deep learning-based perception, probabilistic modeling, physics-informed learned mapping, efficient computing, multimodal fusion, and scale-aware learning—reshape existing research paradigms. Three open challenges define the frontier: interpretation under complex geological conditions, cross-domain semantic generalization, and benchmark dataset construction.</p>
   </div>
 </div></div>
@@ -258,19 +275,19 @@
     <button class="c-btn next" onclick="evoMv(1)" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
     <div class="c-track-wrap"><div class="c-track" id="evoTrack">
       <div class="c-slide">
-        <img src="static/images/02.jpg" alt="Structure timeline" loading="lazy">
+        <img src="https://raw.githubusercontent.com/douyimin/CIG-bench/main/assets/02.jpg" alt="Structure timeline" loading="lazy">
         <div class="c-cap"><strong>Figure 5 · Structure.</strong> Seismic attributes (2015–16) → ML penetration with 2D segmentation and patch-based classification (2017–18) → synthetic-data era and 3D deep segmentation (FaultSeg3D, 2019–20) → semi-/weak supervision (2021–23) → domain foundation models (GEM/SAM, 2024–25).</div>
       </div>
       <div class="c-slide">
-        <img src="static/images/03.jpg" alt="Geobody timeline" loading="lazy">
+        <img src="https://raw.githubusercontent.com/douyimin/CIG-bench/main/assets/03.jpg" alt="Geobody timeline" loading="lazy">
         <div class="c-cap"><strong>Figure 6 · Geobody.</strong> Multiscale attribute enhancement → TGS Salt Challenge and supervised 2D segmentation → 3D end-to-end volumetric segmentation with synthetic and semi-supervised training → SAM-style prompting and unified foundation frameworks (GEM).</div>
       </div>
       <div class="c-slide">
-        <img src="static/images/04.jpg" alt="Facies timeline" loading="lazy">
+        <img src="https://raw.githubusercontent.com/douyimin/CIG-bench/main/assets/04.jpg" alt="Facies timeline" loading="lazy">
         <div class="c-cap"><strong>Figure 7 · Facies.</strong> Attribute-based clustering and SOM → deep feature clustering and contrastive learning → self-supervised pretraining and cross-survey generalization with horizon-based and sectional viewing paradigms.</div>
       </div>
       <div class="c-slide">
-        <img src="static/images/05.jpg" alt="Property timeline" loading="lazy">
+        <img src="https://raw.githubusercontent.com/douyimin/CIG-bench/main/assets/05.jpg" alt="Property timeline" loading="lazy">
         <div class="c-cap"><strong>Figure 8 · Property.</strong> Physics-driven inversion (Bayesian / geostatistical) → end-to-end deep inversion → foundation models (GEM) → cross-survey generalisation with unified seismic + well-log conditioning.</div>
       </div>
     </div></div>
@@ -288,8 +305,8 @@
   <h2 class="sec-title">CIG-Bench Synthetic Dataset</h2>
   <p class="sec-sub">A unified synthetic corpus paired with ground-truth labels for all five tasks under controlled, geologically reasonable conditions.</p>
   <div class="fig">
-    <img src="static/images/benchdata.jpg" alt="CIG-Bench synthetic dataset samples" loading="lazy">
-    <p class="fig-cap"><strong>Figure 9.</strong> Representative samples from the CIG-Bench synthetic dataset. Rows <strong>(a, b)</strong> show seismic samples with structural annotations — raw seismic amplitude volumes, fault labels with diverse fault styles, and relative-geologic-time volumes capturing folds, unconformities, and tilted strata. Rows <strong>(c, d)</strong> show seismic samples with geobody annotations including channel and karst-cave systems of varying scales, geometries, and spatial distributions. All samples are additionally paired with acoustic-impedance and velocity volumes (not shown). Every volume shares a uniform dimension of <code>512 × 512 × 1024</code> with lateral spacing 25 m × 25 m and vertical sampling 5 m.</p>
+    <img src="assets/benchdataset.jpg" alt="CIG-Bench synthetic dataset samples" loading="lazy">
+    <p class="fig-cap"><strong>Figure 9.</strong> Representative samples from the CIG-Bench synthetic dataset. Rows <strong>(a, b)</strong> show samples with structural annotations, including raw seismic amplitude volumes, fault labels with diverse fault styles, relative-geologic-time volumes, and stratigraphic surfaces describing the continuous depositional framework. Rows <strong>(c, d)</strong> show samples with geobody annotations, including channel systems and karst-cave systems of varying scales, geometries, and spatial distributions. All samples are additionally paired with ground-truth acoustic-impedance and velocity volumes (not shown). Each synthetic volume has a dimension of <code>512 × 1024 × 512</code> samples along the depth, inline, and crossline directions, with a vertical sampling interval of 5 m (covering a depth range of about 0–2.56 km) and a lateral grid spacing of 25 m × 25 m (a survey area of about 25.6 × 12.8 km², roughly 328 km²).</p>
   </div>
   <p style="text-align:center;color:var(--text2);opacity:.6;font-size:11.5px;margin-top:10px;font-style:italic;">The benchmark dataset is being prepared and will be uploaded soon.</p>
 </div></div>
@@ -311,20 +328,20 @@
     <button class="c-btn next" onclick="benchMv(1)" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
     <div class="c-track-wrap"><div class="c-track" id="benchTrack">
       <div class="c-slide">
-        <img src="static/images/06.jpg" alt="CIG-Bench Fault results" loading="lazy">
-        <div class="c-cap"><strong>CIG-Bench · Fault.</strong> Skip-connection HRNet variant on field volumes. <em>(a)</em> Netherlands F3 fault-intensive area with subtle polygonal faults near the shallow part; <em>(b)</em> denser polygonal faults from another Netherlands survey; <em>(c)</em> USGS data with extremely dense, intersecting faults; <em>(d)</em> deep-rooted fault system from USGS, with continuous dipping planes and associated secondary faults preserved.</div>
+        <img src="https://raw.githubusercontent.com/douyimin/CIG-bench/main/assets/fault.jpg" alt="CIG-Bench Fault results" loading="lazy">
+        <div class="c-cap"><strong>CIG-Bench · Fault.</strong> Fault segmentation on four field surveys (<b>a–d</b>) with the skip-connection HRNet variant. For each example: the input seismic (columns <code>*-1</code>) and the predicted faults rendered in red over the seismic (columns <code>*-2</code>), shown on both crossline-style cubes (<b>a, b</b>) and inline sections (<b>c, d</b>). The model resolves subtle polygonal faults, extremely dense intersecting fault networks, and deep-rooted continuous dipping planes with their associated secondary faults.</div>
       </div>
       <div class="c-slide">
-        <img src="static/images/06-1.jpg" alt="CIG-Bench RGT results" loading="lazy">
-        <div class="c-cap"><strong>CIG-Bench · RGT.</strong> Relative-geologic-time estimation on field volumes from Nlog and USGS using the RGT-Est training strategy. Left: original seismic; middle: predicted RGT volumes; right: horizons extracted as iso-surfaces of the RGT volume. The predictions remain smooth and stratigraphically consistent across slope bodies, unconformities, densely faulted zones, and multi-package stratigraphy.</div>
+        <img src="https://raw.githubusercontent.com/douyimin/CIG-bench/main/assets/rgt.jpg" alt="CIG-Bench RGT results" loading="lazy">
+        <div class="c-cap"><strong>CIG-Bench · RGT.</strong> Relative-geologic-time estimation on four field surveys (<b>a–d</b>). Columns: input seismic (<code>*-1</code>), the regressed relative-geologic-time volume (<code>*-2</code>), and horizons extracted from the predicted RGT volume and overlaid on the seismic (<code>*-3</code>). Predictions remain smooth and stratigraphically consistent across slope bodies, unconformities, densely faulted zones, and multi-package stratigraphy.</div>
       </div>
       <div class="c-slide">
-        <img src="static/images/07.jpg" alt="CIG-Bench Geobody results" loading="lazy">
-        <div class="c-cap"><strong>CIG-Bench · Channel / Karst.</strong> Multi-scale ensemble inference at seven spatial scales with connected-component post-processing. <em>(a)</em> New Zealand Parihaka channels; <em>(b)</em> New Zealand Romney channels; <em>(c)</em> USGS G3D karst-cave systems. Left: seismic; middle: predicted segmentation overlay; right: extracted 3D geobody objects.</div>
+        <img src="https://raw.githubusercontent.com/douyimin/CIG-bench/main/assets/geobody.jpg" alt="CIG-Bench Geobody results" loading="lazy">
+        <div class="c-cap"><strong>CIG-Bench · Channel / Karst.</strong> Geobody segmentation on three field examples (rows <b>a–c</b>) using multi-scale ensemble inference with connected-component post-processing. Columns: input seismic (<code>*-1</code>), the predicted probability overlaid on the seismic (<code>*-2</code>), and the extracted 3D geobody surface (<code>*-3</code>) after thresholding and connected-component cleanup. <em>(a, b)</em> channel systems and <em>(c)</em> karst-cave systems.</div>
       </div>
       <div class="c-slide">
-        <img src="static/images/08.jpg" alt="CIG-Bench Property results" loading="lazy">
-        <div class="c-cap"><strong>CIG-Bench · Property.</strong> Following the GEM-style conditional paradigm with seismic + sparse well-log inputs. Netherlands F3 examples: <em>(b)</em> acoustic impedance; <em>(c)</em> gamma-ray; <em>(d)</em> lithology; <em>(e)</em> sonic; <em>(f)</em> Vp. The model produces coherent 3D property distributions consistent with seismic reflection patterns despite spatially sparse well constraints.</div>
+        <img src="https://raw.githubusercontent.com/douyimin/CIG-bench/main/assets/property.jpg" alt="CIG-Bench Property results" loading="lazy">
+        <div class="c-cap"><strong>CIG-Bench · Property.</strong> Property modeling on a single survey following the GEM-style conditional paradigm with seismic + sparse well-log inputs. <em>(a)</em> input seismic; <em>(b–f)</em> dense 3D property volumes predicted from the seismic conditioned on sparse well logs (the thin vertical strips are the conditioning wells), with different panels corresponding to different modeled properties / colormaps — e.g. acoustic impedance, gamma-ray, lithology, sonic, and Vp. The model produces coherent property distributions consistent with the seismic reflection patterns despite spatially sparse well constraints.</div>
       </div>
     </div></div>
     <div class="c-dots" id="benchDots">
