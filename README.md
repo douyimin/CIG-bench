@@ -169,7 +169,7 @@ The karst predictor is used identically — only the checkpoint changes:
 from cig_bench.predictor.karst import KarstPredictor
 
 karst_predictor = KarstPredictor(device="cuda")
-scores, used = karst_predictor.predict(seis)
+scores, used = karst_predictor.predict(seis)  # (tline,iline,xline)
 mask = karst_predictor.postprocess(scores, threshold=0.75)
 ```
 
