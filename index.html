@@ -101,6 +101,9 @@
     .c-dot{width:7px;height:7px;border-radius:50%;background:var(--border);border:none;cursor:pointer;transition:all .2s;padding:0}
     .c-dot.on{background:var(--accent);width:22px;border-radius:4px}
 
+    /* All carousels: every slide rendered in one uniform box = average size of the framework figures */
+    #frameC .c-slide img,#evoC .c-slide img{aspect-ratio:4156 / 2414;height:auto;object-fit:contain;background:#fff}
+
     /* Tab labels for carousels */
     .c-tabs{display:flex;justify-content:center;gap:6px;padding:16px 16px 0;flex-wrap:wrap}
     .c-tab{font-size:12px;font-weight:500;padding:6px 14px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text2);cursor:pointer;transition:all .2s;font-family:var(--sans)}
@@ -234,10 +237,29 @@
 <!-- Framework Overview -->
 <div class="sec fade" id="framework"><div class="wrap-w">
   <h2 class="sec-title">An AI Framework for Subsurface Imaging</h2>
-  <p class="sec-sub">A structured overview of AI for geophysics-based subsurface imaging understanding, identifying core challenges and the AI-driven solutions that reshape existing research paradigms.</p>
-  <div class="fig">
-    <img src="https://raw.githubusercontent.com/douyimin/CIG-bench/main/assets/000.png" alt="AI framework for subsurface imaging understanding" loading="lazy">
-    <p class="fig-cap"><strong>Figure 1.</strong> Two categories of core challenges are identified: <em>inherent imaging limitations</em> (blurriness, ambiguity, nonlinear mapping) and <em>data characteristics</em> (massive scale, heterogeneity, multi-scale features). AI-driven solutions—deep learning-based perception, probabilistic modeling, physics-informed learned mapping, efficient computing, multimodal fusion, and scale-aware learning—reshape existing research paradigms. Three open challenges define the frontier: interpretation under complex geological conditions, cross-domain semantic generalization, and benchmark dataset construction.</p>
+  <p class="sec-sub">A structured overview of AI for geophysics-based subsurface imaging understanding, and why subsurface data make machine learning harder than in natural or medical imaging.</p>
+
+  <div class="carousel" id="frameC">
+    <div class="c-tabs" id="frameTabs">
+      <button class="c-tab on" onclick="frameGo(0)">Framework</button>
+      <button class="c-tab" onclick="frameGo(1)">Data Characteristics</button>
+    </div>
+    <button class="c-btn prev" onclick="frameMv(-1)" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
+    <button class="c-btn next" onclick="frameMv(1)" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
+    <div class="c-track-wrap"><div class="c-track" id="frameTrack">
+      <div class="c-slide">
+        <img src="assets/000.png" alt="AI framework for subsurface imaging understanding" loading="lazy">
+        <div class="c-cap"><strong>Figure 1.</strong> An AI framework for geophysics-based subsurface imaging understanding: core challenges and AI-driven solutions.</div>
+      </div>
+      <div class="c-slide">
+        <img src="assets/00.jpg" alt="Data characteristics across natural, medical, and subsurface imaging" loading="lazy">
+        <div class="c-cap"><strong>Figure 2.</strong> Why subsurface imaging is harder for machine learning than natural and medical imaging.</div>
+      </div>
+    </div></div>
+    <div class="c-dots" id="frameDots">
+      <button class="c-dot on" onclick="frameGo(0)" aria-label="Slide 1"></button>
+      <button class="c-dot" onclick="frameGo(1)" aria-label="Slide 2"></button>
+    </div>
   </div>
 </div></div>
 
@@ -306,6 +328,7 @@
 
 
 
+
 <!-- CIG-Bench Carousel -->
 <!-- Quick Start -->
 <div class="sec fade" id="quickstart"><div class="wrap-w">
@@ -321,15 +344,15 @@
     <div class="code-label">🏗️ Fault segmentation</div>
     <div class="code">
       <button class="code-cp" onclick="cpCode(this)"><i class="fas fa-copy"></i> Copy</button>
-<pre><span class="kw">from</span> cig_bench.predictor.fault <span class="kw">import</span> FaultPredictor
+<pre><span class="kw">from</span> cig_bench.predictor.fault <span class="kw">import</span> <span class="fn">FaultPredictor</span>
 
 fault_predictor = <span class="fn">FaultPredictor</span>(device=<span class="str">"cuda"</span>)
 prob, used = fault_predictor.<span class="fn">predict</span>(
-    seis,
-    rank=<span class="num">4</span>, chunk_size=<span class="num">64</span>,      <span class="com"># memory-bounded inference</span>
+    seis,                        <span class="com"># (tline,iline,xline)</span>
+    rank=<span class="num">4</span>, chunk_size=<span class="num">64</span>,       <span class="com"># memory-bounded chunked inference</span>
     threshold=<span class="num">0.5</span>,
     scale_t=<span class="num">0.5</span>, scale_h=<span class="num">0.85</span>, scale_w=<span class="num">0.85</span>,
-    resize_back=<span class="kw">True</span>,           <span class="com"># return result at the original (T,H,W)</span>
+    resize_back=<span class="kw">True</span>,            <span class="com"># return result at the original (T, H, W)</span>
 )
 fault_predictor.<span class="fn">visualize</span>(used, prob)</pre>
     </div>
@@ -343,13 +366,13 @@ fault_predictor.<span class="fn">visualize</span>(used, prob)</pre>
     <div class="code-label">⏱️ Relative Geologic Time (RGT) estimation</div>
     <div class="code">
       <button class="code-cp" onclick="cpCode(this)"><i class="fas fa-copy"></i> Copy</button>
-<pre><span class="kw">from</span> cig_bench.predictor.rgt <span class="kw">import</span> RGTPredictor
+<pre><span class="kw">from</span> cig_bench.predictor.rgt <span class="kw">import</span> <span class="fn">RGTPredictor</span>
 
 rgt_predictor = <span class="fn">RGTPredictor</span>(device=<span class="str">"cuda"</span>)
-rgt_vol, used = rgt_predictor.<span class="fn">predict</span>(seis)
-horizons     = rgt_predictor.<span class="fn">extract_horizons</span>(rgt_vol, n_horizons=<span class="num">100</span>)
+rgt_vol, used = rgt_predictor.<span class="fn">predict</span>(seis)  <span class="com"># (tline,iline,xline)</span>
+horizons      = rgt_predictor.<span class="fn">extract_horizons</span>(rgt_vol, n_horizons=<span class="num">100</span>)
 rgt_predictor.<span class="fn">visualize</span>(used, rgt_vol, horizons)
-<span class="com"># visualize() auto-traces horizons when none are passed:</span>
+<span class="com"># visualize() also auto-traces horizons when none are passed:</span>
 <span class="com"># rgt_predictor.visualize(used, rgt_vol)</span></pre>
     </div>
     <div class="fig fig-sm" style="margin-top:14px">
@@ -362,20 +385,23 @@ rgt_predictor.<span class="fn">visualize</span>(used, rgt_vol, horizons)
     <div class="code-label">🪨 Geobody segmentation (channel / karst)</div>
     <div class="code">
       <button class="code-cp" onclick="cpCode(this)"><i class="fas fa-copy"></i> Copy</button>
-<pre><span class="kw">from</span> cig_bench.predictor.channel <span class="kw">import</span> ChannelPredictor
+<pre><span class="kw">from</span> cig_bench.predictor.channel <span class="kw">import</span> <span class="fn">ChannelPredictor</span>
 
 channel_predictor = <span class="fn">ChannelPredictor</span>(device=<span class="str">"cuda"</span>)
 scores, used = channel_predictor.<span class="fn">predict</span>(
-    seis,
+    seis,                                 <span class="com"># (tline,iline,xline)</span>
     scales=[<span class="num">0.5</span>, <span class="num">0.75</span>, <span class="num">1.0</span>, <span class="num">1.25</span>, <span class="num">1.5</span>],   <span class="com"># custom scale set</span>
     accumulate=<span class="str">"sum"</span>,
 )
 mask = channel_predictor.<span class="fn">postprocess</span>(scores, threshold=<span class="num">0.75</span>, min_size=<span class="num">50000</span>)
 channel_predictor.<span class="fn">visualize</span>(used, scores, mask)
 
-<span class="com"># Karst follows an identical interface: only the checkpoint changes.</span>
-<span class="kw">from</span> cig_bench.predictor.karst <span class="kw">import</span> KarstPredictor
-karst_predictor = <span class="fn">KarstPredictor</span>(device=<span class="str">"cuda"</span>)</pre>
+<span class="com"># The karst predictor is used identically — only the checkpoint changes:</span>
+<span class="kw">from</span> cig_bench.predictor.karst <span class="kw">import</span> <span class="fn">KarstPredictor</span>
+
+karst_predictor = <span class="fn">KarstPredictor</span>(device=<span class="str">"cuda"</span>)
+scores, used = karst_predictor.<span class="fn">predict</span>(seis)  <span class="com"># (tline,iline,xline)</span>
+mask = karst_predictor.<span class="fn">postprocess</span>(scores, threshold=<span class="num">0.75</span>)</pre>
     </div>
     <div class="fig fig-sm" style="margin-top:14px">
       <img src="https://raw.githubusercontent.com/douyimin/CIG-bench/main/assets/geobody.jpg" alt="CIG-Bench geobody segmentation results" loading="lazy">
@@ -388,11 +414,11 @@ karst_predictor = <span class="fn">KarstPredictor</span>(device=<span class="str
     <div class="code">
       <button class="code-cp" onclick="cpCode(this)"><i class="fas fa-copy"></i> Copy</button>
 <pre><span class="kw">import</span> numpy <span class="kw">as</span> np
-<span class="kw">from</span> cig_bench.predictor.property <span class="kw">import</span> PropertyPredictor
+<span class="kw">from</span> cig_bench.predictor.property <span class="kw">import</span> <span class="fn">PropertyPredictor</span>
 
 prop_predictor = <span class="fn">PropertyPredictor</span>(device=<span class="str">"cuda"</span>)
 vp_vol, used, wells = prop_predictor.<span class="fn">predict</span>(
-    seis, vp_log,
+    seis, vp_log,                              <span class="com"># (tline,iline,xline)</span>
     infer_shape=(<span class="num">640</span>, <span class="num">512</span>, <span class="num">512</span>),
 )
 prop_predictor.<span class="fn">visualize</span>(used, vp_vol, wells)</pre>
@@ -470,6 +496,11 @@ function makeCarousel(trackId, dotsId, tabsId, n) {
 const evo = makeCarousel('evoTrack', 'evoDots', 'evoTabs', 4);
 function evoGo(i) { evo.go(i); }
 function evoMv(d) { evo.mv(d); }
+
+// Framework carousel (Figure 1 / Figure 2)
+const frame = makeCarousel('frameTrack', 'frameDots', 'frameTabs', 2);
+function frameGo(i) { frame.go(i); }
+function frameMv(d) { frame.mv(d); }
 
 // Keyboard navigation for the evolution carousel
 document.addEventListener('keydown', e => {
