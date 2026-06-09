@@ -1,4 +1,5 @@
 import os
+
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 
 import contextlib
@@ -17,7 +18,6 @@ from ..networks.hrnet import HRNet
 from .utils import z_score_clip, remove_small_instances
 from ._download import ensure_weight
 
-
 # 单次 scale 可以是标量（同尺度），也可以是 (st, sh, sw) 三元组（各向异性）
 ScaleSpec = Union[float, Tuple[float, float, float]]
 
@@ -25,7 +25,7 @@ ScaleSpec = Union[float, Tuple[float, float, float]]
 # ---------------------------------------------------------------------------
 # 推理类
 # ---------------------------------------------------------------------------
-class karstPredictor:
+class KarstPredictor:
     """
     把 HRNet 河道（karst）预测的完整流程封装为一个类。
 
@@ -55,7 +55,7 @@ class karstPredictor:
     >>> predictor.visualize(seis_used, sum_probs, mask)
     """
 
-    DEFAULT_SCALES: List[float] = [0.25, 0.5, 0.66, 0.75, 1.0, 1.25, 1.5]
+    DEFAULT_SCALES: List[float] = [1.0]
     TASK_NAME: str = "karst"
 
     # ------------------------- 初始化 ------------------------- #
@@ -96,8 +96,9 @@ class karstPredictor:
 
     def _build_model(self) -> nn.Module:
         """实例化 HRNet 并用 state_dict 加载权重。"""
-        model = HRNet()
-        state_dict = torch.load(self.restore_path, map_location='cpu')
+        model = HRNet(in_channel=1, norm_type='bn')
+        if self.use_autocast:
+            state_dict = torch.load(self.restore_path, map_location='cpu')
         model.load_state_dict(state_dict)
         model.eval()
         model.to(self.device)
@@ -141,7 +142,6 @@ class karstPredictor:
         Args:
             seis: numpy 数组，(T, H, W)。
             scales: 尺度列表，每项可以是 float（同尺度）或 (st, sh, sw) 三元组。
-                    默认 [0.25, 0.5, 0.66, 0.75, 1.0, 1.25, 1.5]，与原脚本一致。
                     传 [1.0] 即单尺度。
             clp_s: numpy z-score 截断的 sigma。
             accumulate: 集成方式：
@@ -264,5 +264,3 @@ class karstPredictor:
             )
 
         cigvis.plot3D([node0, node1, node2], grid=[1, 3], share=1)
-
-

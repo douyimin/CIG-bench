@@ -102,7 +102,7 @@ class ChannelPredictor:
 
     def _build_model(self) -> nn.Module:
         """实例化 HRNet 并用 state_dict 加载权重。"""
-        model = HRNet()
+        model = HRNet(in_channel = 1, norm_type = 'bn')
         state_dict = torch.load(self.restore_path, map_location='cpu')
         model.load_state_dict(state_dict)
         model.eval()

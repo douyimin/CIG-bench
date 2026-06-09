@@ -206,7 +206,7 @@ class StageModule(nn.Module):
 
 
 class HRNet(nn.Module):
-    def __init__(self, c=48, norm_type='gn', gn_groups=16):
+    def __init__(self,in_channel = 3, c=48, norm_type='gn', gn_groups=16):
         """
         Args:
             c (int): base channel width.
@@ -221,7 +221,7 @@ class HRNet(nn.Module):
         self.gn_groups = gn_groups
 
         # Input (stem net)
-        self.conv1 = nn.Conv3d(3, 64, kernel_size=(3, 3, 3), stride=(2, 2, 2), padding=(1, 1, 1), bias=False)
+        self.conv1 = nn.Conv3d(in_channel, 64, kernel_size=(3, 3, 3), stride=(2, 2, 2), padding=(1, 1, 1), bias=False)
         self.norm1 = norm_layer(64)
         self.conv2 = nn.Conv3d(64, 64, kernel_size=(3, 3, 3), stride=(2, 2, 2), padding=(1, 1, 1), bias=False)
         self.norm2 = norm_layer(64)

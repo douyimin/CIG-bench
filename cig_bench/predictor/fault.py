@@ -174,7 +174,7 @@ class FaultPredictor:
                 raise ValueError(f"{name} must be > 0, got {s}")
 
         input_tensor, orig_shape = self.preprocess(
-            seis, scale_t, scale_h, scale_w, clp_s_pre=clp_s_pre)
+            seis, scale_t, scale_h, scale_w)
 
         # 推理阶段再做一次更紧的 z-score 截断并映射到 [-1, 1]
         x = tensor_z_score_clip(input_tensor, clp_s=clp_s_in) * 2 - 1
@@ -205,6 +205,7 @@ class FaultPredictor:
                   result_np: np.ndarray,
                   seis_cmap: str = 'gray',
                   fg_cmap_name: str = 'jet',
+                  show_clip_s: float = 3.0,
                   show_input_panel: bool = True):
         """
         用 cigvis 显示叠加结果。输入约定 shape 为 (t, h, w)，内部会 transpose 成 (h, w, t)。
@@ -213,12 +214,12 @@ class FaultPredictor:
         mask_vol = result_np.transpose(1, 2, 0).astype(np.float32)
 
         fg_cmap = colormap.set_alpha_except_min(fg_cmap_name, alpha=1)
-        base_node = cigvis.create_slices(seis_vol, cmap=seis_cmap)
+        base_node = cigvis.create_slices(z_score_clip(seis_vol,show_clip_s), cmap=seis_cmap)
         overlay = cigvis.add_mask(base_node, mask_vol,
                                   cmaps=fg_cmap, interpolation='nearest')
 
         if show_input_panel:
-            ref_node = cigvis.create_slices(seis_vol, cmap=seis_cmap)
+            ref_node = cigvis.create_slices(z_score_clip(seis_vol,show_clip_s), cmap=seis_cmap)
             cigvis.plot3D([ref_node, overlay], grid=[1, 2], share=1)
         else:
             cigvis.plot3D(overlay)

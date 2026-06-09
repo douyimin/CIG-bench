@@ -8,7 +8,8 @@ Workflow:
        zeros by default = no horizon constraints.
     4. Replication-pad by 8, run model, center-crop.
     5. Resample back to the original grid and normalize.
-    6. (Optional) Trace horizons as iso-surfaces of the RGT volume.
+    6. Trace horizons as iso-surfaces of the RGT volume and show three
+       linked 3D views (cigvis).
 """
 
 import os
@@ -125,6 +126,26 @@ class RGTPredictor:
         """
         x = z_score_clip(seis.astype(np.float32), clp_s=clp_s) * 2 - 1   # (T, H, W) in [-1, 1]
         t, h, w = x.shape
+
+
+        if (t, h, w) != tuple(self.infer_shape):
+            msg = (
+                "\n[CIG-Bench RGTPredictor]\n"
+                f"Input size {(t, h, w)} differs from the inference size {tuple(self.infer_shape)}.\n"
+                f"The volume will be resized to {tuple(self.infer_shape)} for inference and then "
+                f"resized back to the original size {(t, h, w)}.\n"
+                "Changing this inference size may cause "
+                "inference to fail or degrade accuracy.\n"
+                "If you need native support for other sizes or models capable of arbitrary-size inference, please contact"
+                "douyimin@ustc.edu.cn or xinmwu@ustc.edu.cn.\n"
+                "=============================================================================================\n"
+                f"输入尺寸 {(t, h, w)} 不等于推理尺寸 {tuple(self.infer_shape)}。\n"
+                f"数据将先被 resize 到 {tuple(self.infer_shape)} 进行推理，随后再 resize 回原始尺寸 {(t, h, w)}。\n"
+                "修改这个推理尺寸可能会导致推理失败或精度下降。\n"
+                "如需对其它尺寸的原生支持，或支持任意尺寸推理的模型，请联系 douyimin@ustc.edu.cn 或 xinmwu@ustc.edu.cn\n"
+            )
+            warnings.warn(msg, stacklevel=2)
+
         x = torch.from_numpy(x)[None, None]                              # (1, 1, T, H, W)
         x = F.interpolate(x, self.infer_shape, mode="trilinear")
         return x.to(self.device), (t, h, w)
@@ -213,6 +234,10 @@ class RGTPredictor:
         """
         把 (T, H, W) 的 RGT 体转成 horizon mask 体，mask 值为该 horizon 上的 RGT 值。
 
+        层位以 RGT 体的等值面形式提取：``horizons_from_rgt`` 返回层位曲面，
+        ``horizon_image`` 将其光栅化为厚度为 ``d`` 体素的 0/1 mask；再与 RGT 体
+        相乘，使每条层位保留其原始 RGT 数值（用于三维叠加配色）。
+
         Returns:
             (H, W, T) 的 float32 数组，可直接用 cigvis.add_mask 叠加。
         """
@@ -226,23 +251,40 @@ class RGTPredictor:
         mask = (mask > 0).astype(np.float32) * ux
         return mask
 
-    # ------------------------- 可视化 ------------------------- #
+    # ------------------------- 可视化（3D cigvis + 等值面层位） ------------------------- #
     @staticmethod
     def visualize(seis_np: np.ndarray,
                   rgt_np: np.ndarray,
                   horizon_mask: Optional[np.ndarray] = None,
+                  trace_horizons: bool = True,
+                  n_horizons: int = 100,
+                  sigma: float = 1.0,
+                  d: int = 3,
+                  image_sigma: float = 0.0,
                   fg_cmap_name: str = "AI"):
         """
-        三联视图：seismic / RGT / seismic + horizons（如提供 horizon_mask）。
+        交互式三维三联视图（cigvis）：seismic / RGT / seismic + horizons。
+
+        层位（horizon）通过 ``rgt_helper`` 的 ``horizons_from_rgt`` /
+        ``horizon_image`` 以 RGT 等值面的形式追踪得到，与 RGT-Est demo 一致。
 
         Args:
             seis_np: (T, H, W) 已预处理的地震体（predict 返回的 seis_used）。
             rgt_np:  (T, H, W) RGT 体（predict 返回的 rgt_volume）。
-            horizon_mask: (H, W, T) horizon mask 体（extract_horizons 返回值）。
-                          为 None 时不显示叠加面板。
+            horizon_mask: (H, W, T) 预先算好的 horizon mask 体（extract_horizons 返回值）。
+                          为 None 且 ``trace_horizons=True`` 时，内部自动追踪层位。
+            trace_horizons: horizon_mask 缺省时是否自动追踪层位。
+                            False 时只显示 seismic / RGT 两个面板。
+            n_horizons / sigma / d / image_sigma: 自动追踪层位的参数
+                                                   （透传给 extract_horizons）。
+            fg_cmap_name: RGT 及层位叠加的前景配色（默认 'AI'）。
         """
-        seis_vol = seis_np.transpose(1, 2, 0)         # (H, W, T)
+        seis_vol = seis_np.transpose(1, 2, 0)                  # (H, W, T)
         rgt_vol = normalization(rgt_np.transpose(1, 2, 0))
+
+        if horizon_mask is None and trace_horizons:
+            horizon_mask = RGTPredictor.extract_horizons(
+                rgt_np, n_horizons=n_horizons, sigma=sigma, d=d, image_sigma=image_sigma)
 
         nodes_seis = cigvis.create_slices(seis_vol, cmap="gray")
         nodes_rgt = cigvis.create_slices(rgt_vol, cmap=fg_cmap_name)
@@ -270,5 +312,6 @@ if __name__ == "__main__":
     predictor = RGTPredictor(device="cuda")
 
     rgt_volume, seis_used = predictor.predict(seis, clp_s=2.0)
-    horizon_mask = predictor.extract_horizons(rgt_volume, n_horizons=100)
-    predictor.visualize(seis_used, rgt_volume, horizon_mask)
+
+    # 自动追踪层位（RGT 等值面）并显示三维三联视图
+    predictor.visualize(seis_used, rgt_volume)
