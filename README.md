@@ -302,12 +302,15 @@ A runnable script per task is provided under `demo/` (`demo_fault.py`, `demo_rgt
 If you use `cig_bench` in your research, please cite the accompanying survey & benchmark paper:
 
 ```bibtex
-@article{dou2025cigbench,
-  title       = {CIG-Bench: A Comprehensive Survey and Benchmark
-                 for AI-Driven Subsurface Imaging Understanding},
-  author      = {Dou, Yimin and Wu, Xinming},
-  year        = {2025},
-  institution = {University of Science and Technology of China}
+@article{dou2026cigbench,
+  title         = {CIG-Bench: A Comprehensive Survey and Benchmark for AI-Driven Subsurface Imaging Understanding},
+  author        = {Yimin Dou, Xinming Wu, Hui Gao, Mingliang Liu, Tao Zhao, Zhi Zhong, Haibin Di, Min Jun Park, Robert G. Clapp, Zhixiang Guo, Long Han, Sergey Fomel},
+  journal       = {arXiv preprint arXiv:2606.09094},
+  year          = {2026},
+  eprint        = {2606.09094},
+  archivePrefix = {arXiv},
+  doi           = {10.48550/arXiv.2606.09094},
+  url           = {https://arxiv.org/abs/2606.09094}
 }
 ```
 
