@@ -27,6 +27,8 @@ All five predictors share a uniform API and load weights automatically from
 > 📄 Paper / project page: <https://douyimin.github.io/CIG-bench>
 > 💻 Source code: <https://github.com/douyimin/CIG-bench>
 
+> 🚧 **CIG-Bench is under active construction and continuously updated.** As a living, community-maintained benchmark, we are progressively adding new baselines, datasets, evaluation protocols, and tasks. Contributions and feedback are welcome — stay tuned for updates.
+
 ---
 
 ## Table of Contents
