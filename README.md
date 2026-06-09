@@ -109,7 +109,7 @@ fault_predictor.visualize(used, prob)
 ```
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/douyimin/CIG-bench/main/assets/fault_segmentation.jpg" alt="CIG-Bench fault segmentation results" width="100%">
+  <img src="https://github.com/douyimin/CIG-bench/tree/main/assets/fault.jpg" alt="CIG-Bench fault segmentation results" width="100%">
   <br>
   <em>Fault segmentation on four field surveys (<b>a–d</b>). For each example: the input seismic (columns
   <code>*-1</code>) and the predicted faults rendered in red over the seismic (columns <code>*-2</code>),
@@ -137,7 +137,7 @@ rgt_predictor.visualize(used, rgt_vol, horizons)
 ```
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/douyimin/CIG-bench/main/assets/rgt_estimation.jpg" alt="CIG-Bench RGT estimation results" width="100%">
+  <img src="https://github.com/douyimin/CIG-bench/tree/main/assets/rgt.jpg" alt="CIG-Bench RGT estimation results" width="100%">
   <br>
   <em>RGT estimation on four field surveys (<b>a–d</b>). Columns: input seismic (<code>*-1</code>), the
   regressed relative-geologic-time volume (<code>*-2</code>), and the RGT co-rendered with the seismic so
@@ -174,7 +174,7 @@ mask = karst_predictor.postprocess(scores, threshold=0.75, min_size=50000)
 ```
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/douyimin/CIG-bench/main/assets/geobody_segmentation.jpg" alt="CIG-Bench geobody segmentation results" width="100%">
+  <img src="https://github.com/douyimin/CIG-bench/tree/main/assets/geobody.jpg" alt="CIG-Bench geobody segmentation results" width="100%">
   <br>
   <em>Geobody segmentation on three different body types (rows <b>a–c</b>). Columns: input seismic
   (<code>*-1</code>), the predicted probability overlaid on the seismic (<code>*-2</code>), and the
@@ -203,7 +203,7 @@ prop_predictor.visualize(used, vp_vol, wells)
 ```
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/douyimin/CIG-bench/main/assets/property_modelling.jpg" alt="CIG-Bench property modelling results" width="100%">
+  <img src="https://github.com/douyimin/CIG-bench/tree/main/assets/property.jpg" alt="CIG-Bench property modelling results" width="100%">
   <br>
   <em>Property modeling on a single survey. (<b>a</b>) input seismic; (<b>b–f</b>) dense property volumes
   predicted from the seismic conditioned on sparse well logs (the thin vertical strips are the
