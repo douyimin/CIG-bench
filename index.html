@@ -170,7 +170,7 @@
 </div></nav>
 
 <header class="hero">
-  <div class="badge">Survey &amp; Benchmark · 2025</div>
+  <div class="badge">Survey &amp; Benchmark · 2026</div>
   <h1><em>CIG-Bench</em>: A Comprehensive Survey and Benchmark for AI-Driven Subsurface Imaging Understanding</h1>
   <div class="authors">
     <div><div class="auth-name">Yimin Dou<sup>1</sup></div></div>
@@ -179,7 +179,8 @@
   <div class="affil"><sup>1</sup> School of Earth and Space Sciences, University of Science and Technology of China</div>
   <div class="corr">* Corresponding author: <a href="mailto:xinmwu@ustc.edu.cn">xinmwu@ustc.edu.cn</a></div>
   <div class="actions">
-    <a class="btn btn-p" href="#"><i class="fas fa-file-pdf"></i> Paper</a>
+    <a class="btn btn-p" href="https://arxiv.org/pdf/2606.09094" target="_blank" rel="noopener"><i class="fas fa-file-pdf"></i> Paper</a>
+    <a class="btn" href="https://arxiv.org/abs/2606.09094" target="_blank" rel="noopener"><i class="ai ai-arxiv"></i> arXiv</a>
     <a class="btn" href="https://github.com/douyimin/CIG-bench" target="_blank" rel="noopener"><i class="fab fa-github"></i> Code</a>
     <a class="btn" href="https://pypi.org/project/cig-bench/" target="_blank" rel="noopener"><i class="fab fa-python"></i> PyPI</a>
     <a class="btn" href="https://huggingface.co/" target="_blank" rel="noopener"><i class="fas fa-database"></i> Weights</a>
@@ -290,6 +291,7 @@
     <img src="static/images/benchdata.jpg" alt="CIG-Bench synthetic dataset samples" loading="lazy">
     <p class="fig-cap"><strong>Figure 9.</strong> Representative samples from the CIG-Bench synthetic dataset. Rows <strong>(a, b)</strong> show seismic samples with structural annotations — raw seismic amplitude volumes, fault labels with diverse fault styles, and relative-geologic-time volumes capturing folds, unconformities, and tilted strata. Rows <strong>(c, d)</strong> show seismic samples with geobody annotations including channel and karst-cave systems of varying scales, geometries, and spatial distributions. All samples are additionally paired with acoustic-impedance and velocity volumes (not shown). Every volume shares a uniform dimension of <code>512 × 512 × 1024</code> with lateral spacing 25 m × 25 m and vertical sampling 5 m.</p>
   </div>
+  <p style="text-align:center;color:var(--text2);opacity:.6;font-size:11.5px;margin-top:10px;font-style:italic;">The benchmark dataset is being prepared and will be uploaded soon.</p>
 </div></div>
 
 
@@ -371,7 +373,9 @@ fault_predictor.<span class="fn">visualize</span>(used, prob)</pre>
 rgt_predictor = <span class="fn">RGTPredictor</span>(device=<span class="str">"cuda"</span>)
 rgt_vol, used = rgt_predictor.<span class="fn">predict</span>(seis)
 horizons     = rgt_predictor.<span class="fn">extract_horizons</span>(rgt_vol, n_horizons=<span class="num">100</span>)
-rgt_predictor.<span class="fn">visualize</span>(used, rgt_vol, horizons)</pre>
+rgt_predictor.<span class="fn">visualize</span>(used, rgt_vol, horizons)
+<span class="com"># visualize() auto-traces horizons when none are passed:</span>
+<span class="com"># rgt_predictor.visualize(used, rgt_vol)</span></pre>
     </div>
   </div>
 
@@ -425,12 +429,17 @@ prop_predictor.<span class="fn">visualize</span>(used, vp_vol, wells)</pre>
   <p style="text-align:center;color:var(--text2);margin-bottom:16px;font-size:13px;">If you find this survey or benchmark useful, please cite our work:</p>
   <div class="bib">
     <button class="bib-cp" onclick="cpBib()"><i class="fas fa-copy"></i> Copy</button>
-    <pre>@article{dou2025cigbench,
-  title   = {CIG-Bench: A Comprehensive Survey and Benchmark
-             for AI-Driven Subsurface Imaging Understanding},
-  author  = {Dou, Yimin and Wu, Xinming},
-  year    = {2025},
-  institution = {University of Science and Technology of China}
+    <pre>@article{dou2026cigbench,
+  title         = {CIG-Bench: A Comprehensive Survey and Benchmark for AI-Driven Subsurface Imaging Understanding},
+  author        = {Yimin Dou and Xinming Wu and Hui Gao and Mingliang Liu and
+                   Tao Zhao and Zhi Zhong and Haibin Di and Min Jun Park and
+                   Robert G. Clapp and Zhixiang Guo and Long Han and Sergey Fomel},
+  journal       = {arXiv preprint arXiv:2606.09094},
+  year          = {2026},
+  eprint        = {2606.09094},
+  archivePrefix = {arXiv},
+  doi           = {10.48550/arXiv.2606.09094},
+  url           = {https://arxiv.org/abs/2606.09094}
 }</pre>
   </div>
 </div></div>
