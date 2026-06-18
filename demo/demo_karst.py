@@ -5,7 +5,6 @@ CIG-Bench Karst demo (.py)
 End-to-end karst-cavity segmentation on a 3D seismic volume:
     1. Load a seismic volume (T, H, W) from disk.
     2. Construct KarstPredictor — weights are auto-downloaded from ModelScope
-       (default) or Hugging Face Hub (set source="huggingface").
     3. Run multi-scale ensemble inference.
     4. Threshold the score volume and remove small connected components.
     5. Visualize the binary mask overlaid on the seismic using cigvis.

@@ -7,7 +7,6 @@ sparse well-log values:
     1. Load a seismic volume (T, H, W) and a sparse property volume of the
        same shape, with zeros where no well is present.
     2. Construct PropertyPredictor — weights are auto-downloaded from
-       ModelScope (default) or Hugging Face Hub (set source="huggingface").
     3. Run inference: the predictor internally stacks three channels —
        seismic, sparse property, well mask — and feeds them to HRNet.
     4. Visualize the predicted dense property volume together with the

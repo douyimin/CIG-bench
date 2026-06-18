@@ -25,9 +25,7 @@ class FaultPredictor:
     权重加载方式：
       - 统一使用 state_dict (.pth)：先 ``HRNet(c=...)`` 实例化，再用
         ``model.load_state_dict(torch.load(restore_path, map_location='cpu'))`` 加载。
-      - ``restore_path`` 不传时，会自动下载默认权重，下载源由 ``source`` 指定：
-          * ``source='modelscope'`` (默认) —— 从魔搭(ModelScope) 下载
-          * ``source='huggingface'``       —— 从 Hugging Face Hub 下载
+      - ``restore_path`` 不传时，会自动从魔搭(ModelScope) 下载默认权重。
       - 推理时支持 ``rank`` / ``chunk_size`` 这类显存优化参数。
 
     缩放系数 scale_t / scale_h / scale_w 在 predict() 调用时传入，
@@ -41,9 +39,7 @@ class FaultPredictor:
     --------
     >>> # 1) 自动从魔搭下载默认权重
     >>> predictor = FaultPredictor(c=32, device='cuda')
-    >>> # 2) 改用 Hugging Face 源
-    >>> predictor = FaultPredictor(c=32, device='cuda', source='huggingface')
-    >>> # 3) 手动指定本地权重
+    >>> # 2) 手动指定本地权重
     >>> predictor = FaultPredictor('fautmodel.pth', c=32, device='cuda')
     >>> result, seis_used = predictor.predict(seis, rank=4, chunk_size=64)
     """
@@ -60,8 +56,7 @@ class FaultPredictor:
                  model_id: Optional[str] = None,
                  file_path: Optional[str] = None,
                  cache_dir: Optional[str] = None,
-                 revision: Optional[str] = None,
-                 source: Optional[str] = None):
+                 revision: Optional[str] = None):
         """
         Args:
             restore_path: 权重文件本地路径(.pth, state_dict)。
@@ -71,7 +66,6 @@ class FaultPredictor:
             align: 输入空间尺寸需要对齐到的倍数(HRNet 下采样要求)。
             use_autocast: 推理时是否使用 torch.autocast。
             model_id / file_path / cache_dir / revision: 下载参数(可选)。
-            source: 'modelscope' (默认) 或 'huggingface'。
         """
         self.restore_path = ensure_weight(
             task=self.TASK_NAME,
@@ -80,7 +74,6 @@ class FaultPredictor:
             file_path=file_path,
             cache_dir=cache_dir,
             revision=revision,
-            source=source,
         )
         self.c = c
         self.device = torch.device(device if torch.cuda.is_available() or device == 'cpu' else 'cpu')

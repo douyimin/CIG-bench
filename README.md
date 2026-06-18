@@ -21,8 +21,8 @@ lithology, etc. — (`PropertyPredictor`). All five baselines share the same HRN
 (skip-connection, optimized variant).
 
 All five predictors share a uniform API and load weights automatically from
-[ModelScope](https://www.modelscope.cn/) (default) or
-[Hugging Face Hub](https://huggingface.co/) on first use.
+[ModelScope](https://www.modelscope.cn/) on first use. Benchmark datasets
+(`Structure`, `Geobody`) can also be downloaded with a single line of code.
 
 > 📄 Paper / project page: <https://douyimin.github.io/CIG-bench>
 > 💻 Source code: <https://github.com/douyimin/CIG-bench>
@@ -39,7 +39,7 @@ All five predictors share a uniform API and load weights automatically from
   - [RGT estimation](#rgt-estimation)
   - [Geobody segmentation (channel / karst)](#geobody-segmentation-channel--karst)
   - [Property modeling](#property-modeling)
-- [Weight sources](#weight-sources)
+- [Datasets](#datasets)
 - [Using local weights or a custom repo](#using-local-weights-or-a-custom-repo)
 - [Project layout](#project-layout)
 - [Requirements](#requirements)
@@ -70,14 +70,10 @@ For development (editable install with dev extras):
 pip install -e ".[dev]"
 ```
 
-You will additionally need at least one weight backend:
+You will additionally need the weight / dataset backend:
 
 ```bash
-# Recommended for users in mainland China
 pip install modelscope
-
-# Or the international default
-pip install huggingface_hub
 ```
 
 ---
@@ -214,29 +210,40 @@ prop_predictor.visualize(used, vp_vol, wells)
 
 ---
 
-## Weight sources
+## Datasets
 
-`cig_bench` ships with two registries — `MODELSCOPE_REGISTRY` and `HF_REGISTRY` — that map each
-task to a `(model_id, file_path)` pair. The active source is resolved in the following order:
-
-1. The `source=` keyword argument passed to a predictor (`"modelscope"` or `"huggingface"`).
-2. The environment variable `CIG_BENCH_WEIGHT_SOURCE`.
-3. The default: `"modelscope"`.
-
-Switch globally for all predictors:
-
-```bash
-export CIG_BENCH_WEIGHT_SOURCE=huggingface
-```
-
-Or per predictor:
+The benchmark datasets are hosted on ModelScope
+([`douyimin/CIG-Bench-Dataset`](https://www.modelscope.cn/datasets/douyimin/CIG-Bench-Dataset))
+and can be downloaded with a single line of code. Two subsets are currently
+available: `Structure` (structural interpretation) and `Geobody` (geobody
+identification).
 
 ```python
-predictor = FaultPredictor(device="cuda", source="huggingface")
+from cig_bench.dataset import cig_structureData
+from cig_bench.dataset import cig_geobodyData
+
+# Each call downloads the subset into a directory you control and
+# returns the local directory path.
+#
+# Default download directory is ./CIG-Bench-Dataset
+structure_dir = cig_structureData()   # -> ./CIG-Bench-Dataset/Structure
+geobody_dir   = cig_geobodyData()     # -> ./CIG-Bench-Dataset/Geobody
 ```
 
-Aliases supported: `ms` / `model_scope` → `modelscope`; `hf` / `hugging_face` / `huggingface_hub` →
-`huggingface`.
+Force a specific download directory by passing it as the first argument
+(the subset name is appended automatically):
+
+```python
+structure_dir = cig_structureData("/data/seis")            # -> /data/seis/Structure
+geobody_dir   = cig_geobodyData(download_dir="./my_data")  # -> ./my_data/Geobody
+```
+
+Data is written as real files under the directory you specify (not into
+ModelScope's hidden `~/.cache/modelscope` cache), so you always know where it is.
+
+Pretrained weights are likewise pulled automatically from ModelScope
+(repo `douyimin/CIG-Bench`) the first time you build a predictor; subsequent
+constructions reuse the local cache.
 
 ---
 
@@ -251,14 +258,13 @@ predictor = FaultPredictor(
     model_id="your-group/CIG-Benchmark",
     file_path="fault.pth",
     cache_dir="./weights_cache",
-    source="huggingface",          # or "modelscope"
     device="cuda",
 )
 ```
 
 
-To change the default repository IDs, edit `MODELSCOPE_DEFAULT_MODEL_ID` /
-`HF_DEFAULT_MODEL_ID` (or the per-task entries) in
+To change the default repository ID, edit `MODELSCOPE_DEFAULT_MODEL_ID`
+(or the per-task entries) in
 `cig_bench/predictor/_download.py`.
 
 ---
@@ -273,9 +279,12 @@ cig_bench/
 │   ├── hrnet.py
 │   ├── hrnet_skipconect.py
 │   └── hrnet_skipconect_opt.py
+├── dataset/                        # One-line dataset downloads
+│   ├── __init__.py
+│   └── _download.py                # Auto-download datasets from ModelScope
 └── predictor/                      # Inference pipelines
     ├── __init__.py
-    ├── _download.py                # Auto-download from ModelScope / HF
+    ├── _download.py                # Auto-download weights from ModelScope
     ├── channel.py
     ├── fault.py
     ├── karst.py
@@ -285,7 +294,7 @@ cig_bench/
 ```
 
 A runnable script per task is provided under `demo/` (`demo_fault.py`, `demo_rgt.py`,
-`demo_channel.py`, `demo_karst.py`, `demo_property.py`).
+`demo_channel.py`, `demo_karst.py`, `demo_property.py`, `demo_dataset.py`).
 
 ---
 
@@ -295,7 +304,7 @@ A runnable script per task is provided under `demo/` (`demo_fault.py`, `demo_rgt
 - `numpy ≥ 1.20`, `scipy ≥ 1.6`
 - `torch ≥ 1.10` (GPU recommended; the predictors expose `rank` / `chunk_size` to bound memory)
 - `cigvis` (for built-in `visualize(...)` methods)
-- `modelscope` *and/or* `huggingface_hub` (depending on chosen weight source)
+- `modelscope` (for automatic weight & dataset downloads)
 
 ---
 

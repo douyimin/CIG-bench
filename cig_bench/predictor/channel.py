@@ -38,19 +38,15 @@ class ChannelPredictor:
     权重加载方式：
       - 统一使用 state_dict (.pth)：先实例化 HRNet()，再用
         ``model.load_state_dict(torch.load(restore_path, map_location='cpu'))`` 加载。
-      - ``restore_path`` 不传时，会自动下载默认权重，下载源由 ``source`` 指定：
-          * ``source='modelscope'`` (默认) —— 从魔搭(ModelScope) 下载
-          * ``source='huggingface'``       —— 从 Hugging Face Hub 下载
+      - ``restore_path`` 不传时，会自动从魔搭(ModelScope) 下载默认权重。
 
     典型用法
     --------
     >>> # 1) 自动从魔搭下载默认权重
     >>> predictor = ChannelPredictor(device='cuda')
-    >>> # 2) 改用 Hugging Face 源
-    >>> predictor = ChannelPredictor(device='cuda', source='huggingface')
-    >>> # 3) 手动指定本地权重
+    >>> # 2) 手动指定本地权重
     >>> predictor = ChannelPredictor('model_ema_step_47500.pth', device='cuda')
-    >>> # 4) 覆盖默认仓库 / 文件名
+    >>> # 3) 覆盖默认仓库 / 文件名
     >>> predictor = ChannelPredictor(model_id='your-group/CIG-Benchmark',
     ...                              file_path='channel.pth', device='cuda')
     >>> sum_probs, seis_used = predictor.predict(seis)
@@ -70,8 +66,7 @@ class ChannelPredictor:
                  model_id: Optional[str] = None,
                  file_path: Optional[str] = None,
                  cache_dir: Optional[str] = None,
-                 revision: Optional[str] = None,
-                 source: Optional[str] = None):
+                 revision: Optional[str] = None):
         """
         Args:
             restore_path: 权重文件本地路径(.pth, state_dict)。
@@ -83,7 +78,6 @@ class ChannelPredictor:
             file_path: 覆盖默认的仓库内文件路径。
             cache_dir: 下载缓存目录(None 用平台默认)。
             revision:  仓库版本/分支。
-            source:    'modelscope' (默认) 或 'huggingface'，决定从哪个平台下载。
         """
         self.restore_path = ensure_weight(
             task=self.TASK_NAME,
@@ -92,7 +86,6 @@ class ChannelPredictor:
             file_path=file_path,
             cache_dir=cache_dir,
             revision=revision,
-            source=source,
         )
         self.device = torch.device(device if torch.cuda.is_available() or device == 'cpu' else 'cpu')
         self.align = align

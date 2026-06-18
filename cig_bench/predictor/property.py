@@ -45,9 +45,7 @@ class PropertyPredictor:
       - 统一使用 state_dict (.pth)：实例化 ``model_cls()``，然后用
         ``model.load_state_dict(torch.load(restore_path, map_location='cpu'))`` 加载。
       - ``model_cls`` 默认是 ``lambda: HRNet(48)``，与作者发布的属性预测权重匹配。
-      - ``restore_path`` 不传时，会自动下载默认权重，下载源由 ``source`` 指定：
-          * ``source='modelscope'`` (默认) —— 从魔搭(ModelScope) 下载
-          * ``source='huggingface'``       —— 从 Hugging Face Hub 下载
+      - ``restore_path`` 不传时，会自动从魔搭(ModelScope) 下载默认权重。
 
     备注：infer_shape 在 predict() 时传入，必须满足模型期望
     (默认 (640, 512, 512))，其它尺寸会导致结果变差或推理失败。
@@ -56,9 +54,7 @@ class PropertyPredictor:
     --------
     >>> # 1) 自动从魔搭下载默认权重
     >>> predictor = PropertyPredictor(device="cuda")
-    >>> # 2) 改用 Hugging Face 源
-    >>> predictor = PropertyPredictor(device="cuda", source="huggingface")
-    >>> # 3) 手动指定本地权重 + 自定义模型构造
+    >>> # 2) 手动指定本地权重 + 自定义模型构造
     >>> predictor = PropertyPredictor(
     ...     restore_path="model_ema_step_162500.pth",
     ...     device="cuda",
@@ -78,8 +74,7 @@ class PropertyPredictor:
                  model_id: Optional[str] = None,
                  file_path: Optional[str] = None,
                  cache_dir: Optional[str] = None,
-                 revision: Optional[str] = None,
-                 source: Optional[str] = None):
+                 revision: Optional[str] = None):
         """
         Args:
             restore_path: 权重文件本地路径(.pth, state_dict)。
@@ -89,7 +84,6 @@ class PropertyPredictor:
             use_tanh: 是否对模型输出再过一次 tanh(原脚本行为)。
             model_cls: 用于实例化模型的无参 callable。默认 ``lambda: HRNet(48)``。
             model_id / file_path / cache_dir / revision: 下载参数(可选)。
-            source: 'modelscope' (默认) 或 'huggingface'。
         """
         self.restore_path = ensure_weight(
             task=self.TASK_NAME,
@@ -98,7 +92,6 @@ class PropertyPredictor:
             file_path=file_path,
             cache_dir=cache_dir,
             revision=revision,
-            source=source,
         )
         self.device = torch.device(device if torch.cuda.is_available() or device == "cpu" else "cpu")
         self.use_autocast = use_autocast and self.device.type == "cuda"

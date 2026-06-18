@@ -4,8 +4,9 @@ Subpackages
 -----------
 - networks  : HRNet-based network architectures.
 - predictor : Inference pipelines (channel, fault, karst, property, rgt).
+- dataset   : One-line dataset downloads (Structure, Geobody) from ModelScope.
 """
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
-__all__ = ["networks", "predictor"]
+__all__ = ["networks", "predictor", "dataset"]

@@ -5,7 +5,6 @@ CIG-Bench RGT demo (.py)
 End-to-end relative geological time (RGT) estimation on a 3D seismic volume:
     1. Load a seismic volume (T, H, W) from disk.
     2. Construct RGTPredictor — weights are auto-downloaded from ModelScope
-       (default) or Hugging Face Hub (set source="huggingface").
     3. Run inference to obtain a dense RGT volume.
     4. Extract horizons as iso-surfaces of the RGT volume.
     5. Visualize the seismic together with the horizons using cigvis.

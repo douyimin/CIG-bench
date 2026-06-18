@@ -32,7 +32,7 @@ long_description = _read("README.md")
 
 setup(
     name="cig_bench",
-    version="0.1.0",
+    version="0.2.0",
     description=(
         "CIG_Bench: a benchmark toolkit for seismic interpretation tasks "
         "(channel / fault / karst / property / RGT) built on HRNet."
@@ -58,7 +58,6 @@ setup(
         "torch>=1.10",
         "cigvis",
         "modelscope",
-        "huggingface_hub",
     ],
     extras_require={
         "dev": [

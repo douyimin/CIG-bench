@@ -44,9 +44,7 @@ class RGTPredictor:
         ``model.load_state_dict(torch.load(restore_path, map_location='cpu'))`` 加载。
       - ``model_cls`` 默认是 ``lambda: HRNet()`` (c=48, 3 输入通道：
         seismic + horizon_rgt + horizon_mask)，与 RGT-Est 权重匹配。
-      - ``restore_path`` 不传时，会自动下载默认权重，下载源由 ``source`` 指定：
-          * ``source='modelscope'`` (默认) —— 从魔搭(ModelScope) 下载
-          * ``source='huggingface'``       —— 从 Hugging Face Hub 下载
+      - ``restore_path`` 不传时，会自动从魔搭(ModelScope) 下载默认权重。
 
     备注：infer_shape 必须满足模型期望(论文/作者建议 (400, 512, 512))，
     其它尺寸会导致结果变差或推理失败。
@@ -55,9 +53,7 @@ class RGTPredictor:
     --------
     >>> # 1) 自动从魔搭下载默认权重
     >>> predictor = RGTPredictor(device="cuda")
-    >>> # 2) 改用 Hugging Face 源
-    >>> predictor = RGTPredictor(device="cuda", source="huggingface")
-    >>> # 3) 手动指定本地权重
+    >>> # 2) 手动指定本地权重
     >>> predictor = RGTPredictor("RGT-Est_CIG-Benchmark.pth", device="cuda")
     """
 
@@ -74,8 +70,7 @@ class RGTPredictor:
                  model_id: Optional[str] = None,
                  file_path: Optional[str] = None,
                  cache_dir: Optional[str] = None,
-                 revision: Optional[str] = None,
-                 source: Optional[str] = None):
+                 revision: Optional[str] = None):
         """
         Args:
             restore_path: 权重文件本地路径(.pth, state_dict)。
@@ -86,7 +81,6 @@ class RGTPredictor:
             use_autocast: 是否启用 torch.autocast。
             model_cls: 用于实例化模型的无参 callable。默认 ``lambda: HRNet()`` (c=48)。
             model_id / file_path / cache_dir / revision: 下载参数(可选)。
-            source: 'modelscope' (默认) 或 'huggingface'。
         """
         self.restore_path = ensure_weight(
             task=self.TASK_NAME,
@@ -95,7 +89,6 @@ class RGTPredictor:
             file_path=file_path,
             cache_dir=cache_dir,
             revision=revision,
-            source=source,
         )
         self.device = torch.device(device if torch.cuda.is_available() or device == "cpu" else "cpu")
         self.infer_shape = tuple(infer_shape)

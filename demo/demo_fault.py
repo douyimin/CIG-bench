@@ -5,7 +5,6 @@ CIG-Bench Fault demo (.py)
 End-to-end fault interpretation on a 3D seismic volume:
     1. Load a seismic volume (T, H, W) from disk.
     2. Construct FaultPredictor — weights are auto-downloaded from ModelScope
-       (default) or Hugging Face Hub (set source="huggingface").
     3. Run multi-scale memory-bounded inference.
     4. Visualize the fault probability volume overlaid on the seismic using cigvis.
 
@@ -43,9 +42,6 @@ def main(seis_path: str = "../RealData/your_seis.npy") -> None:
 
     # ------------------------------------------------------------------
     # 2. Build predictor.  Weights download themselves on first use.
-    #    To switch sources globally:
-    #        export CIG_BENCH_WEIGHT_SOURCE=huggingface
-    #    Or pass `source="huggingface"` to the constructor below.
     # ------------------------------------------------------------------
     predictor = FaultPredictor(device="cuda")
 
